@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BainUltra - Product Knowledge for Designers</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bu-navy: #1e3c54;
+  --bu-navy-light: #2a5070;
+  --bu-warm: #f7f5f2;
+  --bu-accent: #c8a87c;
+  --bu-dark: #0f1f2e;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  height: 100%; overflow: hidden;
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bu-dark);
+  color: #fff;
+  user-select: none; -webkit-user-select: none;
+}
+
+/* Top bar */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 48px;
+  background: var(--bu-navy);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+.topbar-brand { display: flex; align-items: center; gap: 10px; }
+.topbar-logo { font-size: 13px; font-weight: 600; color: #fff; letter-spacing: 0.1em; text-transform: uppercase; }
+.topbar-sep { width: 1px; height: 16px; background: rgba(255,255,255,0.2); }
+.topbar-title { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.6); letter-spacing: 0.04em; }
+.topbar-center { display: flex; align-items: center; gap: 8px; }
+.page-ind { color: rgba(255,255,255,0.85); font-size: 12px; font-weight: 400; }
+.page-ind span { color: rgba(255,255,255,0.4); font-weight: 300; }
+.topbar-right { display: flex; align-items: center; gap: 6px; }
+.tb {
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+  color: #fff; width: 32px; height: 32px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.15s; font-size: 14px; text-decoration: none;
+}
+.tb:hover { background: rgba(255,255,255,0.16); }
+.tb:active { transform: scale(0.93); }
+.tb.active { background: var(--bu-accent); color: var(--bu-navy); }
+
+/* Slide area */
+.slide-area {
+  position: fixed; top: 48px; left: 0; right: 0; bottom: 52px;
+  display: flex; align-items: center; justify-content: center;
+  background: #0a1520;
+}
+.slide-container {
+  position: relative;
+  max-width: 100%; max-height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+.slide-img {
+  max-width: 95vw; max-height: calc(100vh - 100px);
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  transition: opacity 0.25s ease;
+}
+.slide-img.loading { opacity: 0.3; }
+
+/* Navigation arrows */
+.nav-arrow {
+  position: fixed; top: 50%; transform: translateY(-50%);
+  width: 48px; height: 80px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.3); color: rgba(255,255,255,0.7);
+  border: none; cursor: pointer; font-size: 24px;
+  transition: all 0.2s; z-index: 50; border-radius: 8px;
+}
+.nav-arrow:hover { background: rgba(0,0,0,0.6); color: #fff; }
+.nav-arrow.disabled { opacity: 0.2; pointer-events: none; }
+.nav-prev { left: 12px; }
+.nav-next { right: 12px; }
+
+/* Video overlay */
+.video-overlay {
+  display: none;
+  position: fixed; top: 48px; left: 0; right: 0; bottom: 52px;
+  background: rgba(0,0,0,0.92);
+  z-index: 80;
+  align-items: center; justify-content: center;
+  flex-direction: column; gap: 16px;
+}
+.video-overlay.active { display: flex; }
+.video-overlay video {
+  max-width: 90vw; max-height: calc(100vh - 160px);
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+.video-close {
+  position: absolute; top: 16px; right: 16px;
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  color: #fff; width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 18px; transition: all 0.15s;
+}
+.video-close:hover { background: rgba(255,255,255,0.2); }
+.video-selector {
+  display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  padding: 0 20px;
+}
+.video-btn {
+  background: var(--bu-accent); color: var(--bu-navy);
+  border: none; padding: 8px 16px; border-radius: 6px;
+  font-size: 12px; font-weight: 500; cursor: pointer;
+  font-family: inherit; transition: all 0.15s;
+}
+.video-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
+.video-btn.playing { background: #fff; }
+
+/* Play indicator on slide */
+.play-indicator {
+  display: none;
+  position: absolute; bottom: 20px; right: 20px;
+  background: var(--bu-accent); color: var(--bu-navy);
+  padding: 8px 14px; border-radius: 20px;
+  font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: all 0.2s;
+  z-index: 10;
+  animation: pulse 2s infinite;
+}
+.play-indicator.visible { display: flex; align-items: center; gap: 6px; }
+.play-indicator:hover { transform: scale(1.05); filter: brightness(1.1); }
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200,168,124,0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(200,168,124,0); }
+}
+
+/* Bottom bar */
+.bottombar {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 52px;
+  background: var(--bu-navy);
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 20px; z-index: 100; gap: 4px;
+}
+.thumb-strip {
+  display: flex; gap: 4px; overflow-x: auto; max-width: 90vw;
+  scrollbar-width: none; -ms-overflow-style: none;
+  padding: 4px;
+}
+.thumb-strip::-webkit-scrollbar { display: none; }
+.thumb {
+  width: 56px; height: 36px; flex-shrink: 0;
+  border-radius: 4px; cursor: pointer;
+  object-fit: cover; opacity: 0.5;
+  border: 2px solid transparent;
+  transition: all 0.15s;
+}
+.thumb:hover { opacity: 0.8; }
+.thumb.active { opacity: 1; border-color: var(--bu-accent); }
+.thumb.has-video::after {
+  content: '';
+  position: absolute;
+  bottom: 2px; right: 2px;
+  width: 8px; height: 8px;
+  background: var(--bu-accent);
+  border-radius: 50%;
+}
+
+/* Fullscreen */
+.fullscreen .topbar, .fullscreen .bottombar { display: none; }
+.fullscreen .slide-area { top: 0; bottom: 0; }
+.fullscreen .nav-arrow { opacity: 0; }
+.fullscreen:hover .nav-arrow { opacity: 1; }
+
+/* Touch */
+@media (max-width: 768px) {
+  .nav-arrow { width: 36px; height: 60px; font-size: 18px; }
+  .nav-prev { left: 4px; }
+  .nav-next { right: 4px; }
+  .topbar-title { display: none; }
+  .topbar-sep { display: none; }
+}
+
+/* Loading */
+.loading-spinner {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1);
+  border-top-color: var(--bu-accent); border-radius: 50%;
+  animation: spin 0.8s linear infinite; z-index: 5;
+  display: none;
+}
+.loading-spinner.active { display: block; }
+@keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">BainUltra</div>
+    <div class="topbar-sep"></div>
+    <div class="topbar-title">Product Knowledge for Designers</div>
+  </div>
+  <div class="topbar-center">
+    <button class="tb" onclick="prevSlide()">&#9664;</button>
+    <div class="page-ind"><span id="currentSlide">1</span> <span>/</span> <span id="totalSlides">39</span></div>
+    <button class="tb" onclick="nextSlide()">&#9654;</button>
+  </div>
+  <div class="topbar-right">
+    <a class="tb" href="../" title="Back to Hub">&#8962;</a>
+    <button class="tb" onclick="toggleFullscreen()" title="Fullscreen">&#x26F6;</button>
+  </div>
+</div>
+
+<!-- Slide area -->
+<div class="slide-area" id="slideArea">
+  <div class="loading-spinner" id="spinner"></div>
+  <div class="slide-container">
+    <img class="slide-img" id="slideImg" src="slides/slide-01.jpg" alt="Slide 1" draggable="false">
+    <div class="play-indicator" id="playBtn" onclick="showVideos()">
+      &#9654; Play Video
+    </div>
+  </div>
+</div>
+
+<!-- Navigation arrows -->
+<button class="nav-arrow nav-prev" id="prevBtn" onclick="prevSlide()">&#9664;</button>
+<button class="nav-arrow nav-next" id="nextBtn" onclick="nextSlide()">&#9654;</button>
+
+<!-- Video overlay -->
+<div class="video-overlay" id="videoOverlay">
+  <div class="video-close" onclick="hideVideos()">&#10005;</div>
+  <video id="videoPlayer" controls autoplay></video>
+  <div class="video-selector" id="videoSelector"></div>
+</div>
+
+<!-- Bottom thumbnail strip -->
+<div class="bottombar">
+  <div class="thumb-strip" id="thumbStrip"></div>
+</div>
+
+<script>
+// Video base URL - will point to GitHub Releases
+const VIDEO_BASE = 'videos/';
+
+// Slide data with video mapping
+const slideData = [
+  { slide: 1, videos: [] },
+  { slide: 2, videos: ['media1.mp4'] },
+  { slide: 3, videos: ['media2.mp4'] },
+  { slide: 4, videos: [] },
+  { slide: 5, videos: [] },
+  { slide: 6, videos: [] },
+  { slide: 7, videos: [] },
+  { slide: 8, videos: ['media3.mp4'] },
+  { slide: 9, videos: ['media4.mp4'] },
+  { slide: 10, videos: ['media5.mp4'] },
+  { slide: 11, videos: ['media6.mp4'] },
+  { slide: 12, videos: ['media7.mp4'] },
+  { slide: 13, videos: ['media8.mp4'] },
+  { slide: 14, videos: ['media9.mp4'] },
+  { slide: 15, videos: ['media10.mp4'] },
+  { slide: 16, videos: ['media11.mp4'] },
+  { slide: 17, videos: ['media12.mp4', 'media13.mp4'] },
+  { slide: 18, videos: [] },
+  { slide: 19, videos: [] },
+  { slide: 20, videos: ['media14.mp4'] },
+  { slide: 21, videos: [] },
+  { slide: 22, videos: ['media15.mp4'] },
+  { slide: 23, videos: [] },
+  { slide: 24, videos: [] },
+  { slide: 25, videos: ['media16.mp4'] },
+  { slide: 26, videos: ['media17.mp4'] },
+  { slide: 27, videos: ['media18.mp4'] },
+  { slide: 28, videos: ['media19.mp4'] },
+  { slide: 29, videos: ['media20.mp4'] },
+  { slide: 30, videos: ['media21.mp4'] },
+  { slide: 31, videos: [] },
+  { slide: 32, videos: [] },
+  { slide: 33, videos: [] },
+  { slide: 34, videos: ['media22.mp4'] },
+  { slide: 35, videos: [] },
+  { slide: 36, videos: [] },
+  { slide: 37, videos: [] },
+  { slide: 38, videos: ['media23.mp4'] },
+  { slide: 39, videos: [] }
+];
+
+let currentIndex = 0;
+const totalSlides = slideData.length;
+
+// Preload adjacent slides
+const preloadCache = {};
+function preloadSlide(idx) {
+  if (idx < 0 || idx >= totalSlides) return;
+  const num = String(idx + 1).padStart(2, '0');
+  const src = `slides/slide-${num}.jpg`;
+  if (!preloadCache[src]) {
+    const img = new Image();
+    img.src = src;
+    preloadCache[src] = img;
+  }
+}
+
+function goToSlide(idx) {
+  if (idx < 0 || idx >= totalSlides) return;
+  currentIndex = idx;
+  const num = String(idx + 1).padStart(2, '0');
+  const img = document.getElementById('slideImg');
+  const spinner = document.getElementById('spinner');
+
+  img.classList.add('loading');
+  spinner.classList.add('active');
+
+  const newSrc = `slides/slide-${num}.jpg`;
+  img.onload = () => {
+    img.classList.remove('loading');
+    spinner.classList.remove('active');
+  };
+  img.src = newSrc;
+  img.alt = `Slide ${idx + 1}`;
+
+  document.getElementById('currentSlide').textContent = idx + 1;
+  document.getElementById('prevBtn').classList.toggle('disabled', idx === 0);
+  document.getElementById('nextBtn').classList.toggle('disabled', idx === totalSlides - 1);
+
+  // Update play button
+  const playBtn = document.getElementById('playBtn');
+  const hasVideo = slideData[idx].videos.length > 0;
+  playBtn.classList.toggle('visible', hasVideo);
+
+  // Update thumbnails
+  document.querySelectorAll('.thumb').forEach((t, i) => {
+    t.classList.toggle('active', i === idx);
+  });
+
+  // Scroll active thumb into view
+  const activeThumb = document.querySelector('.thumb.active');
+  if (activeThumb) activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+
+  // Preload neighbors
+  preloadSlide(idx - 1);
+  preloadSlide(idx + 1);
+
+  // Hide video overlay
+  hideVideos();
+}
+
+function nextSlide() { goToSlide(currentIndex + 1); }
+function prevSlide() { goToSlide(currentIndex - 1); }
+
+function showVideos() {
+  const videos = slideData[currentIndex].videos;
+  if (!videos.length) return;
+
+  const overlay = document.getElementById('videoOverlay');
+  const player = document.getElementById('videoPlayer');
+  const selector = document.getElementById('videoSelector');
+
+  overlay.classList.add('active');
+  player.src = VIDEO_BASE + videos[0];
+
+  selector.innerHTML = '';
+  if (videos.length > 1) {
+    videos.forEach((v, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'video-btn' + (i === 0 ? ' playing' : '');
+      btn.textContent = `Video ${i + 1}`;
+      btn.onclick = () => {
+        player.src = VIDEO_BASE + v;
+        player.play();
+        selector.querySelectorAll('.video-btn').forEach(b => b.classList.remove('playing'));
+        btn.classList.add('playing');
+      };
+      selector.appendChild(btn);
+    });
+  }
+}
+
+function hideVideos() {
+  const overlay = document.getElementById('videoOverlay');
+  const player = document.getElementById('videoPlayer');
+  overlay.classList.remove('active');
+  player.pause();
+  player.src = '';
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+    document.body.classList.add('fullscreen');
+  } else {
+    document.exitFullscreen();
+    document.body.classList.remove('fullscreen');
+  }
+}
+
+// Build thumbnail strip
+function buildThumbs() {
+  const strip = document.getElementById('thumbStrip');
+  slideData.forEach((s, i) => {
+    const num = String(i + 1).padStart(2, '0');
+    const img = document.createElement('img');
+    img.className = 'thumb' + (i === 0 ? ' active' : '') + (s.videos.length ? ' has-video' : '');
+    img.src = `slides/slide-${num}.jpg`;
+    img.loading = 'lazy';
+    img.onclick = () => goToSlide(i);
+    strip.appendChild(img);
+  });
+}
+
+// Keyboard nav
+document.addEventListener('keydown', (e) => {
+  if (document.getElementById('videoOverlay').classList.contains('active')) {
+    if (e.key === 'Escape') hideVideos();
+    return;
+  }
+  switch(e.key) {
+    case 'ArrowRight': case 'ArrowDown': case ' ': nextSlide(); e.preventDefault(); break;
+    case 'ArrowLeft': case 'ArrowUp': prevSlide(); e.preventDefault(); break;
+    case 'Home': goToSlide(0); break;
+    case 'End': goToSlide(totalSlides - 1); break;
+    case 'f': case 'F': toggleFullscreen(); break;
+    case 'v': case 'V': showVideos(); break;
+    case 'Escape':
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+        document.body.classList.remove('fullscreen');
+      }
+      break;
+  }
+});
+
+// Touch swipe support
+let touchStartX = 0, touchStartY = 0;
+document.getElementById('slideArea').addEventListener('touchstart', (e) => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+});
+document.getElementById('slideArea').addEventListener('touchend', (e) => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+    dx < 0 ? nextSlide() : prevSlide();
+  }
+});
+
+// Fullscreen change handler
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement) document.body.classList.remove('fullscreen');
+});
+
+// Init
+document.getElementById('totalSlides').textContent = totalSlides;
+buildThumbs();
+goToSlide(0);
+preloadSlide(1);
+preloadSlide(2);
+</script>
+</body>
+</html>
