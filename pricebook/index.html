@@ -10,8 +10,9 @@
     --bu-navy: #1e3c54;
     --bu-warm: #f7f5f2;
     --bu-accent: #c8a87c;
-    --page-w: 520;
-    --page-h: 673;
+    --page-w: 400;
+    --page-h: 518;
+    --page-ratio: 0.7723;
     --anim-speed: 0.7s;
   }
 
@@ -315,9 +316,7 @@
   }
   .kbd-hint kbd { padding: 1px 4px; border: 1px solid rgba(255,255,255,0.18); border-radius: 3px; font-family: inherit; font-size: 9px; }
 
-  @media (max-width: 1200px) { :root { --page-w: 420; --page-h: 544; } }
-  @media (max-width: 900px) { :root { --page-w: 340; --page-h: 440; } .nav-arrow { width: 38px; height: 38px; font-size: 14px; } .nav-prev { left: 6px; } .nav-next { right: 6px; } }
-  @media (max-width: 600px) { :root { --page-w: 280; --page-h: 362; } }
+  @media (max-width: 900px) { .nav-arrow { width: 38px; height: 38px; font-size: 14px; } .nav-prev { left: 6px; } .nav-next { right: 6px; } }
 </style>
 </head>
 <body>
@@ -842,8 +841,42 @@ function buildThumbs() {
   }
 }
 
+/* ── DYNAMIC SIZING ── */
+const PAGE_RATIO = 0.7723; // width / height of each page
+
+function resizeBook() {
+  const topBar = 52, bottomBar = 44, pad = 32, arrowZone = 120;
+  const availH = window.innerHeight - topBar - bottomBar - pad;
+  const availW = window.innerWidth - arrowZone;
+
+  // Each page has aspect ratio PAGE_RATIO, book shows 2 pages side by side
+  // bookW = 2 * pageW, bookH = pageH, pageW = pageH * PAGE_RATIO
+  // So bookW = 2 * pageH * PAGE_RATIO
+
+  // Fit by height first
+  let pageH = availH;
+  let pageW = pageH * PAGE_RATIO;
+  let bookW = pageW * 2;
+
+  // If book is too wide, fit by width
+  if (bookW > availW) {
+    bookW = availW;
+    pageW = bookW / 2;
+    pageH = pageW / PAGE_RATIO;
+  }
+
+  pageW = Math.floor(pageW);
+  pageH = Math.floor(pageH);
+
+  document.documentElement.style.setProperty('--page-w', pageW);
+  document.documentElement.style.setProperty('--page-h', pageH);
+}
+
 /* ── INIT ── */
 function init() {
+  resizeBook();
+  window.addEventListener('resize', resizeBook);
+
   buildTOC();
   buildThumbs();
   for (let i = 1; i <= 8; i++) preload(i);
