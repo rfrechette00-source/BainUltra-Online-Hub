@@ -60,95 +60,80 @@ body {
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+  gap: 16px;
   max-width: 720px; width: 100%;
-  padding: 0 24px 60px;
+  padding: 0 20px 40px;
 }
 
 .card {
-  position: relative;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px;
-  padding: 32px 28px;
-  text-decoration: none; color: #fff;
-  transition: all 0.3s ease;
-  display: flex; flex-direction: column; gap: 12px;
+  border-radius: 14px;
+  padding: 24px 22px;
+  color: #fff;
+  display: flex; flex-direction: column; gap: 8px;
 }
-.card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--bu-accent), var(--bu-accent-light));
-  opacity: 0; transition: opacity 0.3s;
-}
-.card:hover {
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(200,168,124,0.2);
-}
-.card:hover::before { opacity: 1; }
 
 .card-icon {
-  width: 44px; height: 44px;
+  width: 38px; height: 38px;
   background: rgba(200,168,124,0.12);
-  border-radius: 10px;
+  border-radius: 9px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 20px; color: var(--bu-accent);
+  font-size: 18px; color: var(--bu-accent);
 }
 .card-title {
-  font-size: 18px; font-weight: 600; letter-spacing: -0.01em;
+  font-size: 17px; font-weight: 600; letter-spacing: -0.01em;
 }
 .card-desc {
-  font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.55);
-  line-height: 1.5;
+  font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.5);
+  line-height: 1.45;
 }
 
 .card-buttons {
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  margin-top: 8px;
+  display: flex; flex-direction: column; gap: 8px;
+  margin-top: 6px;
 }
 .card-view {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
   font-size: 13px; font-weight: 600; color: #fff;
   text-decoration: none;
-  padding: 10px 24px; border-radius: 8px;
+  padding: 11px 20px; border-radius: 8px;
   background: var(--bu-accent);
   border: none;
-  transition: all 0.2s; width: 100%;
-  cursor: pointer; letter-spacing: 0.01em;
+  transition: all 0.2s;
+  cursor: pointer;
 }
 .card-view:hover {
   background: var(--bu-accent-light);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(200,168,124,0.3);
 }
-.card-view svg { width: 16px; height: 16px; fill: currentColor; }
+.card-view svg { width: 15px; height: 15px; fill: currentColor; flex-shrink: 0; }
 .card-download {
-  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
   font-size: 12px; font-weight: 500; color: var(--bu-accent);
   text-decoration: none;
-  padding: 7px 18px; border-radius: 6px;
-  background: rgba(200,168,124,0.1);
-  border: 1px solid rgba(200,168,124,0.2);
-  transition: all 0.2s; width: 100%;
+  padding: 9px 18px; border-radius: 7px;
+  background: rgba(200,168,124,0.08);
+  border: 1px solid rgba(200,168,124,0.15);
+  transition: all 0.2s;
   cursor: pointer;
 }
 .card-download:hover {
-  background: rgba(200,168,124,0.2);
-  border-color: rgba(200,168,124,0.4);
-  color: var(--bu-accent-light);
+  background: rgba(200,168,124,0.18);
+  border-color: rgba(200,168,124,0.35);
 }
-.card-download svg { width: 14px; height: 14px; fill: currentColor; }
-
+.card-download svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
 
 @media (max-width: 500px) {
-  .header { padding: 40px 24px 16px; }
-  .logo-mark { font-size: 36px; }
-  .cards { grid-template-columns: 1fr; gap: 20px; padding: 0 16px calc(40px + env(safe-area-inset-bottom, 0px)); }
-  .card { padding: 28px 22px 32px; }
-  .card-view { padding: 12px 20px; font-size: 14px; }
-  .card-download { padding: 10px 18px; font-size: 13px; }
-  .card-buttons { gap: 10px; margin-top: 12px; }
+  .header { padding: 40px 20px 14px; }
+  .divider { margin: 20px auto 28px; }
+  .cards { grid-template-columns: 1fr; gap: 14px; padding: 0 14px calc(32px + env(safe-area-inset-bottom, 0px)); }
+  .card { padding: 20px 18px 22px; gap: 6px; }
+  .card-icon { width: 34px; height: 34px; font-size: 16px; border-radius: 8px; }
+  .card-title { font-size: 16px; }
+  .card-desc { font-size: 12.5px; }
+  .card-buttons { gap: 7px; margin-top: 8px; }
+  .card-view { padding: 11px 16px; font-size: 13px; }
+  .card-download { padding: 9px 16px; font-size: 12px; }
 }
 </style>
 </head>
