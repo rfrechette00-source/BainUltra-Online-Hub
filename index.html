@@ -59,9 +59,9 @@ body {
 /* Cards grid */
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  max-width: 720px; width: 100%;
+  max-width: 1020px; width: 100%;
   padding: 0 20px 40px;
 }
 
@@ -147,7 +147,7 @@ body {
 @media (max-width: 500px) {
   .header { padding: 40px 20px 14px; }
   .divider { margin: 20px auto 28px; }
-  .cards { grid-template-columns: 1fr; gap: 14px; padding: 0 14px calc(32px + env(safe-area-inset-bottom, 0px)); }
+  .cards { grid-template-columns: 1fr; gap: 14px; padding: 0 14px calc(32px + env(safe-area-inset-bottom, 0px)); max-width: 100%; }
   .card { padding: 20px 18px 22px; gap: 6px; }
   .card-icon { width: 34px; height: 34px; font-size: 16px; border-radius: 8px; }
   .card-title { font-size: 16px; }
