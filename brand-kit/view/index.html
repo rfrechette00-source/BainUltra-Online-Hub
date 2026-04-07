@@ -10,73 +10,137 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { height: 100%; font-family: 'Inter', -apple-system, sans-serif; background: #000; }
 body {
-  min-height: 100vh;
-  background: #0a0a0a;
-  color: #fff;
+  min-height: 100vh; background: #0a0a0a; color: #fff;
   display: flex; flex-direction: column; align-items: center;
   padding-bottom: env(safe-area-inset-bottom, 0);
 }
-
 .header {
-  padding: 40px 24px 16px;
-  text-align: center;
-  display: flex; flex-direction: column; align-items: center;
-  width: 100%;
+  padding: 40px 24px 16px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; width: 100%;
 }
-.logo-mark { width: 200px; max-width: 55vw; margin-bottom: 10px; }
+.logo-mark { width: 180px; max-width: 50vw; margin-bottom: 8px; }
 .logo-mark svg { width: 100%; height: auto; }
-.tagline {
-  font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.4);
-  letter-spacing: 0.15em; text-transform: uppercase;
-}
+.tagline { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.35); letter-spacing: 0.15em; text-transform: uppercase; }
 .back-link {
   display: inline-flex; align-items: center; gap: 6px;
   font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.35);
-  text-decoration: none; letter-spacing: 0.05em; margin-top: 14px;
-  transition: color 0.2s;
+  text-decoration: none; letter-spacing: 0.05em; margin-top: 14px; transition: color 0.2s;
 }
 .back-link:hover { color: rgba(255,255,255,0.65); }
 .back-link svg { width: 14px; height: 14px; fill: currentColor; }
+.divider { width: 60px; height: 1px; background: linear-gradient(90deg, transparent, var(--bu-accent), transparent); margin: 20px auto 16px; }
 
-.divider {
-  width: 60px; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--bu-accent), transparent);
-  margin: 20px auto 16px;
-}
+.folder-heading { text-align: center; padding: 0 20px 24px; width: 100%; max-width: 1100px; }
+.folder-heading h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
 
-.folder-heading {
-  text-align: center;
-  padding: 0 20px 20px;
-  width: 100%; max-width: 960px;
+/* Breadcrumb */
+.breadcrumb {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  justify-content: center; margin-top: 6px;
 }
-.folder-heading h1 {
-  font-size: 20px; font-weight: 600; letter-spacing: -0.02em;
-}
+.breadcrumb a { font-size: 12px; color: var(--bu-accent); text-decoration: none; font-weight: 400; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb span { font-size: 12px; color: rgba(255,255,255,0.3); }
 
-.embed-wrapper {
-  width: 100%; max-width: 960px;
+/* File grid */
+.file-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px; width: 100%; max-width: 1100px;
   padding: 0 20px 60px;
-  flex: 1;
+}
+.file-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; overflow: hidden;
+  transition: all 0.2s; cursor: pointer;
+  text-decoration: none; color: #fff;
   display: flex; flex-direction: column;
 }
-.embed-box {
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  flex: 1;
-  min-height: 520px;
+.file-card:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(200,168,124,0.25);
+  transform: translateY(-2px);
 }
-#drive-frame {
-  width: 100%; height: 100%;
-  min-height: 520px;
-  border: none; display: block;
+.file-thumb {
+  width: 100%; aspect-ratio: 4/3;
+  background: rgba(255,255,255,0.03);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; position: relative;
 }
+.file-thumb img {
+  width: 100%; height: 100%; object-fit: cover;
+  display: block;
+}
+.file-thumb .folder-icon-large {
+  color: var(--bu-accent); opacity: 0.7;
+}
+.file-thumb .folder-icon-large svg { width: 48px; height: 48px; fill: currentColor; }
+.file-info {
+  padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.file-name {
+  font-size: 12px; font-weight: 500; line-height: 1.4;
+  word-break: break-word;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.file-meta {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.file-size { font-size: 11px; color: rgba(255,255,255,0.3); font-weight: 300; }
+.file-dl {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 500; color: var(--bu-accent);
+  text-decoration: none; padding: 4px 10px;
+  border-radius: 5px; background: rgba(200,168,124,0.1);
+  border: 1px solid rgba(200,168,124,0.15);
+  transition: all 0.15s;
+}
+.file-dl:hover { background: rgba(200,168,124,0.2); border-color: rgba(200,168,124,0.3); }
+.file-dl svg { width: 11px; height: 11px; fill: currentColor; }
 
-@media (max-width: 500px) {
+/* Loading / Error */
+.status-msg {
+  text-align: center; padding: 80px 20px;
+  font-size: 14px; color: rgba(255,255,255,0.4); font-weight: 300;
+}
+.status-msg .spinner {
+  width: 28px; height: 28px; border: 2px solid rgba(200,168,124,0.2);
+  border-top-color: var(--bu-accent); border-radius: 50%;
+  animation: spin 0.8s linear infinite; margin: 0 auto 14px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Lightbox */
+.lightbox {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.92);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s;
+}
+.lightbox.active { opacity: 1; pointer-events: all; }
+.lightbox img { max-width: 90vw; max-height: 85vh; border-radius: 8px; }
+.lightbox-close {
+  position: absolute; top: 20px; right: 24px;
+  background: rgba(255,255,255,0.1); border: none; color: #fff;
+  width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+  font-size: 20px; display: flex; align-items: center; justify-content: center;
+}
+.lightbox-dl {
+  position: absolute; bottom: 30px;
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bu-accent); color: #fff;
+  font-size: 13px; font-weight: 600; padding: 10px 24px;
+  border-radius: 8px; text-decoration: none; border: none; cursor: pointer;
+}
+.lightbox-dl svg { width: 14px; height: 14px; fill: currentColor; }
+
+@media (max-width: 600px) {
   .header { padding: 30px 16px 12px; }
-  .folder-heading h1 { font-size: 18px; }
-  .embed-wrapper { padding: 0 14px calc(40px + env(safe-area-inset-bottom, 0px)); }
-  #drive-frame { min-height: 420px; }
+  .file-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 14px 40px; }
+  .file-info { padding: 10px 10px; }
+  .file-name { font-size: 11px; }
 }
 </style>
 </head>
@@ -99,34 +163,158 @@ body {
     </svg>
   </div>
   <div class="tagline">recover from the world</div>
-  <a class="back-link" href="../">
+  <a class="back-link" id="back-link" href="../">
     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-    Back to Brand Kit
+    <span id="back-label">Back to Brand Kit</span>
   </a>
 </div>
 
 <div class="divider"></div>
 
 <div class="folder-heading">
-  <h1 id="folder-title">Loading…</h1>
+  <h1 id="folder-title">Loading&hellip;</h1>
+  <div class="breadcrumb" id="breadcrumb"></div>
 </div>
 
-<div class="embed-wrapper">
-  <div class="embed-box">
-    <iframe id="drive-frame" allowfullscreen></iframe>
-  </div>
+<div id="content"></div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+  <a class="lightbox-dl" id="lightbox-dl" href="#" download onclick="event.stopPropagation()">
+    <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>
+    Download
+  </a>
 </div>
 
 <script>
-  var p = new URLSearchParams(window.location.search);
-  var id = p.get('id');
-  var name = p.get('name') || 'Brand Kit Folder';
-  document.getElementById('folder-title').textContent = name;
-  document.title = 'BainUltra \u2014 ' + name;
-  if (id) {
-    document.getElementById('drive-frame').src =
-      'https://drive.google.com/embeddedfolderview?id=' + id + '#list';
+var params = new URLSearchParams(window.location.search);
+var folderId = params.get('id');
+var folderName = params.get('name') || 'Folder';
+var parentId = params.get('parent');
+var parentName = params.get('parentName');
+
+document.getElementById('folder-title').textContent = folderName;
+document.title = 'BainUltra \u2014 ' + folderName;
+
+// Update back link for subfolders
+if (parentId) {
+  var backLink = document.getElementById('back-link');
+  backLink.href = '?id=' + parentId + '&name=' + encodeURIComponent(parentName || 'Brand Kit');
+  document.getElementById('back-label').textContent = 'Back to ' + (parentName || 'Brand Kit');
+}
+
+function formatSize(bytes) {
+  if (!bytes) return '';
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1048576) return (bytes / 1024).toFixed(0) + ' KB';
+  if (bytes < 1073741824) return (bytes / 1048576).toFixed(1) + ' MB';
+  return (bytes / 1073741824).toFixed(1) + ' GB';
+}
+
+function isImage(mime) { return mime && mime.startsWith('image/'); }
+function isVideo(mime) { return mime && mime.startsWith('video/'); }
+function isPdf(mime) { return mime && mime.includes('pdf'); }
+
+function openLightbox(thumbUrl, dlUrl) {
+  var lb = document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src = thumbUrl.replace('sz=w400', 'sz=w1200');
+  document.getElementById('lightbox-dl').href = dlUrl;
+  lb.classList.add('active');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
+
+function renderFiles(files) {
+  var container = document.getElementById('content');
+
+  if (!files || files.length === 0) {
+    container.innerHTML = '<div class="status-msg">This folder is empty.</div>';
+    return;
   }
+
+  // Sort: folders first, then files
+  files.sort(function(a, b) {
+    if (a.isFolder && !b.isFolder) return -1;
+    if (!a.isFolder && b.isFolder) return 1;
+    return a.name.localeCompare(b.name);
+  });
+
+  var grid = document.createElement('div');
+  grid.className = 'file-grid';
+
+  files.forEach(function(file) {
+    if (file.isFolder) {
+      var a = document.createElement('a');
+      a.className = 'file-card';
+      a.href = '?id=' + file.id + '&name=' + encodeURIComponent(file.name)
+        + '&parent=' + folderId + '&parentName=' + encodeURIComponent(folderName);
+      a.innerHTML =
+        '<div class="file-thumb"><div class="folder-icon-large"><svg viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg></div></div>' +
+        '<div class="file-info"><div class="file-name">' + file.name + '</div>' +
+        '<div class="file-meta"><span class="file-size">Folder</span></div></div>';
+      grid.appendChild(a);
+    } else {
+      var card = document.createElement('div');
+      card.className = 'file-card';
+
+      var thumbHtml;
+      if (isImage(file.mimeType) || isPdf(file.mimeType)) {
+        thumbHtml = '<div class="file-thumb"><img src="' + file.thumbnail + '" alt="' + file.name + '" loading="lazy" onerror="this.style.display=\'none\'"></div>';
+      } else if (isVideo(file.mimeType)) {
+        thumbHtml = '<div class="file-thumb"><img src="' + file.thumbnail + '" alt="' + file.name + '" loading="lazy" onerror="this.style.display=\'none\'"></div>';
+      } else {
+        thumbHtml = '<div class="file-thumb"><img src="' + file.thumbnail + '" alt="' + file.name + '" loading="lazy" onerror="this.style.display=\'none\'"></div>';
+      }
+
+      card.innerHTML = thumbHtml +
+        '<div class="file-info">' +
+        '<div class="file-name">' + file.name + '</div>' +
+        '<div class="file-meta">' +
+        '<span class="file-size">' + formatSize(file.size) + '</span>' +
+        '<a class="file-dl" href="' + file.downloadUrl + '" target="_blank" onclick="event.stopPropagation()">' +
+        '<svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>' +
+        'Download</a></div></div>';
+
+      if (isImage(file.mimeType)) {
+        card.onclick = function() { openLightbox(file.thumbnail, file.downloadUrl); };
+      } else {
+        card.onclick = function() { window.open(file.viewUrl, '_blank'); };
+      }
+      grid.appendChild(card);
+    }
+  });
+
+  container.innerHTML = '';
+  container.appendChild(grid);
+}
+
+function loadFolder() {
+  var container = document.getElementById('content');
+  container.innerHTML = '<div class="status-msg"><div class="spinner"></div>Loading files&hellip;</div>';
+
+  fetch('/api/drive?folderId=' + encodeURIComponent(folderId))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.error) {
+        container.innerHTML = '<div class="status-msg">Unable to load folder contents.<br><br><span style="font-size:12px;opacity:0.5">' + (data.error.message || data.error) + '</span></div>';
+        return;
+      }
+      renderFiles(data.files);
+    })
+    .catch(function(err) {
+      container.innerHTML = '<div class="status-msg">Unable to load folder contents.<br><br><span style="font-size:12px;opacity:0.5">' + err.message + '</span></div>';
+    });
+}
+
+if (folderId) {
+  loadFolder();
+} else {
+  document.getElementById('content').innerHTML = '<div class="status-msg">No folder specified.</div>';
+}
 </script>
 
 </body>
