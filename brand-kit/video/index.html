@@ -108,20 +108,33 @@ fetch(url)
       return f.mimeType && f.mimeType.startsWith('video/');
     });
     if (!video) {
-      document.getElementById('content').innerHTML =
-        '<div class="status-msg">No video found in folder.</div>';
+      document.getElementById('content').textContent = 'No video found in folder.';
       return;
     }
-    document.getElementById('content').innerHTML =
-      '<div class="video-container">' +
-        '<iframe src="' + video.previewUrl + '" allow="autoplay" allowfullscreen></iframe>' +
-      '</div>' +
-      '<div class="video-controls">' +
-        '<a class="dl-btn" href="' + video.downloadUrl + '" target="_blank">' +
-          '<svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>' +
-          'Download Video' +
-        '</a>' +
-      '</div>';
+    var previewUrl = 'https://drive.google.com/file/d/' + encodeURIComponent(video.id) + '/preview';
+    var downloadUrl = 'https://drive.google.com/uc?export=download&id=' + encodeURIComponent(video.id);
+    // Build DOM elements safely
+    var container = document.createElement('div');
+    container.className = 'video-container';
+    var iframe = document.createElement('iframe');
+    iframe.src = previewUrl;
+    iframe.allow = 'autoplay; encrypted-media';
+    iframe.allowFullscreen = true;
+    container.appendChild(iframe);
+    var controls = document.createElement('div');
+    controls.className = 'video-controls';
+    var dlBtn = document.createElement('a');
+    dlBtn.className = 'dl-btn';
+    dlBtn.href = downloadUrl;
+    dlBtn.target = '_blank';
+    dlBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>';
+    var dlText = document.createTextNode(' Download Video');
+    dlBtn.appendChild(dlText);
+    controls.appendChild(dlBtn);
+    var content = document.getElementById('content');
+    content.textContent = '';
+    content.appendChild(container);
+    content.appendChild(controls);
   })
   .catch(function(err) {
     document.getElementById('content').innerHTML =
