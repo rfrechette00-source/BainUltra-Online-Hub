@@ -1,0 +1,56 @@
+name: Uptime Monitor
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  check-uptime:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check all pages
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: |
+          FAILED=0
+          BASE="https://rfrechette00-source.github.io/BainUltra-Online-Hub"
+
+          for PAGE in "" "/brand-kit/" "/pricebook/" "/brochure/" "/presentation/"; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "${BASE}${PAGE}")
+            if [ "$STATUS" != "200" ]; then
+              echo "FAIL: ${BASE}${PAGE} returned HTTP $STATUS"
+              FAILED=1
+            else
+              echo "OK: ${BASE}${PAGE}"
+            fi
+          done
+
+          if [ -n "$GOOGLE_API_KEY" ]; then
+            RESPONSE=$(curl -s "https://www.googleapis.com/drive/v3/files?q=%271qnxgICn9BZz2mxO9nnFm0ajTQssD6v3q%27+in+parents+and+trashed%3Dfalse&key=${GOOGLE_API_KEY}&fields=files(id)&pageSize=1")
+            if echo "$RESPONSE" | grep -q '"error"'; then
+              echo "FAIL: Google Drive API error"
+              FAILED=1
+            else
+              echo "OK: Google Drive API"
+            fi
+          fi
+
+          if [ "$FAILED" = "1" ]; then
+            exit 1
+          fi
+
+      - name: Send failure notification
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "BainUltra Online Hub - Site Alert"
+          body: |
+            One or more pages on the BainUltra Online Hub are down.
+            Check: https://github.com/rfrechette00-source/BainUltra-Online-Hub/actions
+          to: Rfrechette00@gmail.com
+          from: BainUltra Hub Monitor
