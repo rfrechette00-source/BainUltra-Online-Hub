@@ -73,12 +73,12 @@ body {
   line-height: 1.5;
 }
 
-/* Folder grid */
+/* Folder grid — 2 columns on desktop */
 .folders {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 14px;
-  max-width: 720px; width: 100%;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  max-width: 680px; width: 100%;
   padding: 0 20px 60px;
 }
 
@@ -86,7 +86,8 @@ body {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 12px;
-  padding: 20px 18px;
+  padding: 24px 22px;
+  aspect-ratio: 1 / 1;
   text-decoration: none;
   color: #fff;
   display: flex; flex-direction: column; gap: 10px;
@@ -140,7 +141,7 @@ body {
   .section-heading { padding: 0 14px 24px; }
   .section-heading h1 { font-size: 20px; }
   .folders { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 14px calc(40px + env(safe-area-inset-bottom, 0px)); }
-  .folder-card { padding: 16px 14px; }
+  .folder-card { padding: 16px 14px; aspect-ratio: 1 / 1; }
   .folder-name { font-size: 13px; }
 }
 </style>
