@@ -40,14 +40,13 @@ body {
   border-radius: 12px; overflow: hidden;
   position: relative;
 }
-.video-container iframe,
-.video-container video {
+.video-container iframe {
   width: 100%; height: 100%; border: none; display: block;
 }
 
 .video-controls {
   display: flex; align-items: center; justify-content: center; gap: 12px;
-  padding: 20px 0 40px;
+  padding: 20px 0 40px; flex-wrap: wrap;
 }
 .dl-btn {
   display: inline-flex; align-items: center; gap: 8px;
@@ -58,6 +57,13 @@ body {
 }
 .dl-btn:hover { background: var(--bu-accent-light); }
 .dl-btn svg { width: 15px; height: 15px; fill: currentColor; }
+.dl-btn.secondary {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.dl-btn.secondary:hover {
+  background: rgba(255,255,255,0.15);
+}
 
 .status-msg {
   text-align: center; padding: 80px 20px;
@@ -74,7 +80,7 @@ body {
   .header { padding: 16px 16px 8px; }
   .video-title { font-size: 16px; margin: 8px 0 12px; }
   .video-wrapper { padding: 0 10px; }
-  .video-controls { padding: 16px 0 32px; }
+  .video-controls { padding: 16px 0 32px; gap: 8px; }
   .dl-btn { padding: 10px 22px; font-size: 12px; }
 }
 </style>
@@ -97,21 +103,19 @@ body {
 var GOOGLE_API_KEY = 'AIzaSyCCsXbhDE7YnPH6uqLtpL0U8fOrZH-DFYk';
 var folderId = '1-WI5xFEmro3TOYpWN8fbwY8CL1lPBU0v';
 
-var url = 'https://www.googleapis.com/drive/v3/files'
+var apiUrl = 'https://www.googleapis.com/drive/v3/files'
   + '?q=' + encodeURIComponent("'" + folderId + "' in parents and trashed=false")
   + '&key=' + GOOGLE_API_KEY
   + '&fields=' + encodeURIComponent('files(id,name,mimeType)')
   + '&pageSize=10';
 
-fetch(url)
+fetch(apiUrl)
   .then(function(r) { return r.json(); })
   .then(function(data) {
     if (data.error || !data.files) {
-      document.getElementById('content').innerHTML =
-        '<div class="status-msg">Unable to load video.</div>';
+      document.getElementById('content').textContent = 'Unable to load video.';
       return;
     }
-    // Find the video file
     var video = data.files.find(function(f) {
       return f.mimeType && f.mimeType.startsWith('video/');
     });
@@ -119,34 +123,59 @@ fetch(url)
       document.getElementById('content').textContent = 'No video found in folder.';
       return;
     }
-    var previewUrl = 'https://drive.google.com/file/d/' + encodeURIComponent(video.id) + '/preview';
-    var downloadUrl = 'https://drive.google.com/uc?export=download&id=' + encodeURIComponent(video.id);
-    // Build DOM elements safely
+
+    var fileId = video.id;
+    var embedUrl = 'https://drive.google.com/file/d/' + fileId + '/preview';
+    var viewUrl = 'https://drive.google.com/file/d/' + fileId + '/view';
+    var downloadUrl = 'https://drive.google.com/uc?export=download&id=' + fileId;
+
+    var content = document.getElementById('content');
+
+    // Build video container with iframe embed
     var container = document.createElement('div');
     container.className = 'video-container';
     var iframe = document.createElement('iframe');
-    iframe.src = previewUrl;
-    iframe.allow = 'autoplay; encrypted-media';
-    iframe.allowFullscreen = true;
+    iframe.src = embedUrl;
+    iframe.setAttribute('allow', 'autoplay; encrypted-media; fullscreen');
+    iframe.setAttribute('allowfullscreen', 'true');
+    iframe.setAttribute('loading', 'eager');
     container.appendChild(iframe);
+
+    // Build controls
     var controls = document.createElement('div');
     controls.className = 'video-controls';
+
+    var openBtn = document.createElement('a');
+    openBtn.className = 'dl-btn';
+    openBtn.href = viewUrl;
+    openBtn.target = '_blank';
+    openBtn.textContent = 'Open in Google Drive';
+
     var dlBtn = document.createElement('a');
-    dlBtn.className = 'dl-btn';
+    dlBtn.className = 'dl-btn secondary';
     dlBtn.href = downloadUrl;
     dlBtn.target = '_blank';
-    dlBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>';
-    var dlText = document.createTextNode(' Download Video');
-    dlBtn.appendChild(dlText);
+    dlBtn.textContent = 'Download Video';
+
+    controls.appendChild(openBtn);
     controls.appendChild(dlBtn);
-    var content = document.getElementById('content');
+
     content.textContent = '';
     content.appendChild(container);
     content.appendChild(controls);
+
+    // If iframe fails to load after 8 seconds, show fallback
+    var timer = setTimeout(function() {
+      var fallback = document.createElement('p');
+      fallback.style.cssText = 'text-align:center;font-size:12px;color:rgba(255,255,255,0.35);margin-top:8px';
+      fallback.textContent = 'Video not loading? Click "Open in Google Drive" above.';
+      content.appendChild(fallback);
+    }, 8000);
+
+    iframe.onload = function() { clearTimeout(timer); };
   })
   .catch(function(err) {
-    document.getElementById('content').innerHTML =
-      '<div class="status-msg">Unable to load video.</div>';
+    document.getElementById('content').textContent = 'Unable to load video.';
   });
 </script>
 
