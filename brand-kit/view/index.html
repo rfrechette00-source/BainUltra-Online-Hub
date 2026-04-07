@@ -292,18 +292,37 @@ function renderFiles(files) {
   container.appendChild(grid);
 }
 
+var GOOGLE_API_KEY = 'PASTE_API_KEY_HERE';
+
 function loadFolder() {
   var container = document.getElementById('content');
   container.innerHTML = '<div class="status-msg"><div class="spinner"></div>Loading files&hellip;</div>';
 
-  fetch('/api/drive?folderId=' + encodeURIComponent(folderId))
+  var url = 'https://www.googleapis.com/drive/v3/files'
+    + '?q=' + encodeURIComponent("'" + folderId + "' in parents and trashed=false")
+    + '&key=' + GOOGLE_API_KEY
+    + '&fields=' + encodeURIComponent('files(id,name,mimeType,size)')
+    + '&pageSize=200&orderBy=name';
+
+  fetch(url)
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data.error) {
         container.innerHTML = '<div class="status-msg">Unable to load folder contents.<br><br><span style="font-size:12px;opacity:0.5">' + (data.error.message || data.error) + '</span></div>';
         return;
       }
-      renderFiles(data.files);
+      var files = (data.files || []).map(function(f) {
+        return {
+          id: f.id, name: f.name, mimeType: f.mimeType,
+          size: f.size ? Number(f.size) : 0,
+          isFolder: f.mimeType === 'application/vnd.google-apps.folder',
+          thumbnail: 'https://drive.google.com/thumbnail?id=' + f.id + '&sz=w400',
+          downloadUrl: 'https://drive.google.com/uc?export=download&id=' + f.id,
+          viewUrl: 'https://drive.google.com/file/d/' + f.id + '/view',
+          previewUrl: 'https://drive.google.com/file/d/' + f.id + '/preview'
+        };
+      });
+      renderFiles(files);
     })
     .catch(function(err) {
       container.innerHTML = '<div class="status-msg">Unable to load folder contents.<br><br><span style="font-size:12px;opacity:0.5">' + err.message + '</span></div>';
