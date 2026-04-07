@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>BainUltra - File Viewer</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --bu-accent: #c8a87c; --bu-accent-light: #d4bc98; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { height: 100%; font-family: 'Inter', -apple-system, sans-serif; background: #000; }
+body {
+  height: 100vh; background: #000; color: #fff;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; height: 52px; flex-shrink: 0;
+  background: #111; border-bottom: 1px solid rgba(255,255,255,0.07);
+  gap: 12px;
+}
+.back-btn {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.5);
+  text-decoration: none; flex-shrink: 0;
+  transition: color 0.2s;
+}
+.back-btn:hover { color: #fff; }
+.back-btn svg { width: 16px; height: 16px; fill: currentColor; }
+.file-title {
+  font-size: 13px; font-weight: 500;
+  color: rgba(255,255,255,0.8);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  text-align: center; flex: 1;
+}
+.dl-btn {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; color: #fff;
+  padding: 7px 16px; border-radius: 7px;
+  background: var(--bu-accent); text-decoration: none;
+  flex-shrink: 0; transition: background 0.2s;
+  white-space: nowrap;
+}
+.dl-btn:hover { background: var(--bu-accent-light); }
+.dl-btn svg { width: 13px; height: 13px; fill: currentColor; }
+.viewer {
+  flex: 1; overflow: hidden; position: relative;
+  background: #1a1a1a;
+}
+.viewer iframe {
+  width: 100%; height: 100%; border: none; display: block;
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-btn" id="back-btn" href="../">
+    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+    Back
+  </a>
+  <div class="file-title" id="file-title">Loading…</div>
+  <a class="dl-btn" id="dl-btn" href="#" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>
+    Download
+  </a>
+</div>
+
+<div class="viewer">
+  <iframe id="viewer-frame" allowfullscreen></iframe>
+</div>
+
+<script>
+var p = new URLSearchParams(window.location.search);
+var fileId = p.get('id');
+var fileName = p.get('name') || 'File';
+var parentId = p.get('parent');
+var parentName = p.get('parentName');
+
+document.getElementById('file-title').textContent = fileName;
+document.title = 'BainUltra \u2014 ' + fileName;
+
+var dlUrl = 'https://drive.google.com/uc?export=download&id=' + fileId;
+document.getElementById('dl-btn').href = dlUrl;
+
+if (parentId) {
+  var backUrl = '../view/?id=' + parentId + '&name=' + encodeURIComponent(parentName || 'Brand Kit');
+  if (p.get('grandparent')) {
+    backUrl += '&parent=' + p.get('grandparent') + '&parentName=' + encodeURIComponent(p.get('grandparentName') || '');
+  }
+  document.getElementById('back-btn').href = backUrl;
+}
+
+document.getElementById('viewer-frame').src =
+  'https://drive.google.com/file/d/' + fileId + '/preview';
+</script>
+
+</body>
+</html>
