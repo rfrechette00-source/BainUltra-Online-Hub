@@ -45,7 +45,7 @@ body {
 /* File grid */
 .file-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 16px; width: 100%; max-width: 1100px;
   padding: 0 20px 60px;
 }
@@ -142,6 +142,8 @@ body {
   .file-info { padding: 10px 10px; }
   .file-name { font-size: 11px; }
 }
+/* Make file cards also act as links */
+a.file-card { text-decoration: none; }
 </style>
 </head>
 <body>
@@ -191,9 +193,9 @@ body {
 <script>
 var params = new URLSearchParams(window.location.search);
 var folderId = params.get('id');
-var folderName = params.get('name') || 'Folder';
+var folderName = (params.get('name') || 'Folder').replace(/\b2025\b/g, '2026');
 var parentId = params.get('parent');
-var parentName = params.get('parentName');
+var parentName = (params.get('parentName') || '').replace(/\b2025\b/g, '2026');
 
 document.getElementById('folder-title').textContent = folderName;
 document.title = 'BainUltra \u2014 ' + folderName;
@@ -216,6 +218,11 @@ function formatSize(bytes) {
 function isImage(mime) { return mime && mime.startsWith('image/'); }
 function isVideo(mime) { return mime && mime.startsWith('video/'); }
 function isPdf(mime) { return mime && mime.includes('pdf'); }
+
+// Normalize outdated year references
+function normalizeName(name) {
+  return name.replace(/\b2025\b/g, '2026');
+}
 
 function openLightbox(thumbUrl, dlUrl) {
   var lb = document.getElementById('lightbox');
@@ -247,45 +254,43 @@ function renderFiles(files) {
   grid.className = 'file-grid';
 
   files.forEach(function(file) {
+    var displayName = normalizeName(file.name);
+    var card = document.createElement('a');
+    card.className = 'file-card';
+
+    var thumbHtml = '<div class="file-thumb"><img src="' + file.thumbnail + '" alt="' + displayName + '" loading="lazy" onerror="this.parentNode.innerHTML=\'<div class=\\\"folder-icon-large\\\"><svg viewBox=\\\"0 0 24 24\\\"><path d=\\\"M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z\\\"/></svg></div>\'"></div>';
+
     if (file.isFolder) {
-      var a = document.createElement('a');
-      a.className = 'file-card';
-      a.href = '?id=' + file.id + '&name=' + encodeURIComponent(file.name)
+      card.href = '?id=' + file.id + '&name=' + encodeURIComponent(displayName)
         + '&parent=' + folderId + '&parentName=' + encodeURIComponent(folderName);
-      a.innerHTML =
-        '<div class="file-thumb"><div class="folder-icon-large"><svg viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg></div></div>' +
-        '<div class="file-info"><div class="file-name">' + file.name + '</div>' +
-        '<div class="file-meta"><span class="file-size">Folder</span></div></div>';
-      grid.appendChild(a);
-    } else {
-      var card = document.createElement('div');
-      card.className = 'file-card';
-
-      var thumbHtml;
-      if (isImage(file.mimeType) || isPdf(file.mimeType)) {
-        thumbHtml = '<div class="file-thumb"><img src="' + file.thumbnail + '" alt="' + file.name + '" loading="lazy" onerror="this.style.display=\'none\'"></div>';
-      } else if (isVideo(file.mimeType)) {
-        thumbHtml = '<div class="file-thumb"><img src="' + file.thumbnail + '" alt="' + file.name + '" loading="lazy" onerror="this.style.display=\'none\'"></div>';
-      } else {
-        thumbHtml = '<div class="file-thumb"><img src="' + file.thumbnail + '" alt="' + file.name + '" loading="lazy" onerror="this.style.display=\'none\'"></div>';
-      }
-
+      thumbHtml = '<div class="file-thumb"><div class="folder-icon-large"><svg viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg></div></div>';
       card.innerHTML = thumbHtml +
-        '<div class="file-info">' +
-        '<div class="file-name">' + file.name + '</div>' +
-        '<div class="file-meta">' +
-        '<span class="file-size">' + formatSize(file.size) + '</span>' +
+        '<div class="file-info"><div class="file-name">' + displayName + '</div>' +
+        '<div class="file-meta"><span class="file-size">Folder</span></div></div>';
+    } else if (isImage(file.mimeType)) {
+      card.href = '#';
+      card.addEventListener('click', (function(thumb, dl) {
+        return function(e) { e.preventDefault(); openLightbox(thumb, dl); };
+      })(file.thumbnail, file.downloadUrl));
+      card.innerHTML = thumbHtml +
+        '<div class="file-info"><div class="file-name">' + displayName + '</div>' +
+        '<div class="file-meta"><span class="file-size">' + formatSize(file.size) + '</span>' +
         '<a class="file-dl" href="' + file.downloadUrl + '" target="_blank" onclick="event.stopPropagation()">' +
-        '<svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>' +
-        'Download</a></div></div>';
-
-      if (isImage(file.mimeType)) {
-        card.onclick = function() { openLightbox(file.thumbnail, file.downloadUrl); };
-      } else {
-        card.onclick = function() { window.open(file.viewUrl, '_blank'); };
-      }
-      grid.appendChild(card);
+        '<svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>Download</a></div></div>';
+    } else {
+      // PDFs and all other files — navigate to hub file viewer page
+      card.href = '../file/?id=' + file.id
+        + '&name=' + encodeURIComponent(displayName)
+        + '&parent=' + folderId
+        + '&parentName=' + encodeURIComponent(folderName)
+        + (parentId ? '&grandparent=' + parentId + '&grandparentName=' + encodeURIComponent(parentName || '') : '');
+      card.innerHTML = thumbHtml +
+        '<div class="file-info"><div class="file-name">' + displayName + '</div>' +
+        '<div class="file-meta"><span class="file-size">' + formatSize(file.size) + '</span>' +
+        '<span class="file-dl">' +
+        '<svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>Open</span></div></div>';
     }
+    grid.appendChild(card);
   });
 
   container.innerHTML = '';
