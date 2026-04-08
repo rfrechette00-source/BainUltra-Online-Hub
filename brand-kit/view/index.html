@@ -190,6 +190,7 @@ a.file-card { text-decoration: none; }
   </a>
 </div>
 
+<script src="../config.js"></script>
 <script>
 var params = new URLSearchParams(window.location.search);
 var folderId = params.get('id');
@@ -296,8 +297,6 @@ function renderFiles(files) {
   container.innerHTML = '';
   container.appendChild(grid);
 }
-
-var GOOGLE_API_KEY = 'AIzaSyCCsXbhDE7YnPH6uqLtpL0U8fOrZH-DFYk';
 
 function loadFolder() {
   var container = document.getElementById('content');
