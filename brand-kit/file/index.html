@@ -93,6 +93,16 @@ if (parentId) {
 
 document.getElementById('viewer-frame').src =
   'https://drive.google.com/file/d/' + fileId + '/preview';
+
+// Google Drive iframes push internal navigation entries onto the browser
+// history stack. When the user presses back and the URL hasn't changed,
+// it means we landed on one of those Drive-internal entries — skip it.
+var pageUrl = window.location.href;
+window.addEventListener('popstate', function() {
+  if (window.location.href === pageUrl) {
+    history.back();
+  }
+});
 </script>
 
 </body>
