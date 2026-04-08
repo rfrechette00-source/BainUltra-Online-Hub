@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Static Site (Python)",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4000"],
+      "port": 4000
+    },
+    {
+      "name": "Static Site (npx serve)",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-l", "8081", "."],
+      "port": 8081
+    }
+  ]
+}

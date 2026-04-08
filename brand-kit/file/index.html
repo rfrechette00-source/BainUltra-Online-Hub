@@ -1,109 +1,295 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>BainUltra - File Viewer</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root { --bu-accent: #c8a87c; --bu-accent-light: #d4bc98; }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { height: 100%; font-family: 'Inter', -apple-system, sans-serif; background: #000; }
-body {
-  height: 100vh; background: #000; color: #fff;
-  display: flex; flex-direction: column; overflow: hidden;
-}
-.topbar {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 16px; height: 52px; flex-shrink: 0;
-  background: #111; border-bottom: 1px solid rgba(255,255,255,0.07);
-  gap: 12px;
-}
-.back-btn {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.5);
-  text-decoration: none; flex-shrink: 0;
-  transition: color 0.2s;
-}
-.back-btn:hover { color: #fff; }
-.back-btn svg { width: 16px; height: 16px; fill: currentColor; }
-.file-title {
-  font-size: 13px; font-weight: 500;
-  color: rgba(255,255,255,0.8);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  text-align: center; flex: 1;
-}
-.dl-btn {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 12px; font-weight: 600; color: #fff;
-  padding: 7px 16px; border-radius: 7px;
-  background: var(--bu-accent); text-decoration: none;
-  flex-shrink: 0; transition: background 0.2s;
-  white-space: nowrap;
-}
-.dl-btn:hover { background: var(--bu-accent-light); }
-.dl-btn svg { width: 13px; height: 13px; fill: currentColor; }
-.viewer {
-  flex: 1; overflow: hidden; position: relative;
-  background: #1a1a1a;
-}
-.viewer iframe {
-  width: 100%; height: 100%; border: none; display: block;
-}
-</style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>BainUltra - File Viewer</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bu-accent: #c8a87c;
+        --bu-accent-light: #d4bc98;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        height: 100%;
+        font-family:
+          "Inter",
+          -apple-system,
+          sans-serif;
+        background: #000;
+      }
+      body {
+        height: 100vh;
+        background: #000;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
 
-<div class="topbar">
-  <a class="back-btn" id="back-btn" href="../">
-    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-    Back
-  </a>
-  <div class="file-title" id="file-title">Loading…</div>
-  <a class="dl-btn" id="dl-btn" href="#" target="_blank">
-    <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>
-    Download
-  </a>
-</div>
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        height: 52px;
+        flex-shrink: 0;
+        background: #111;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        gap: 12px;
+      }
+      .back-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.5);
+        text-decoration: none;
+        flex-shrink: 0;
+        transition: color 0.2s;
+      }
+      .back-btn:hover {
+        color: #fff;
+      }
+      .back-btn svg {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+      }
+      .file-title {
+        font-size: 13px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.8);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+        flex: 1;
+      }
+      .dl-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #fff;
+        padding: 7px 16px;
+        border-radius: 7px;
+        background: var(--bu-accent);
+        text-decoration: none;
+        flex-shrink: 0;
+        transition: background 0.2s;
+        white-space: nowrap;
+      }
+      .dl-btn:hover {
+        background: var(--bu-accent-light);
+      }
+      .dl-btn svg {
+        width: 13px;
+        height: 13px;
+        fill: currentColor;
+      }
 
-<div class="viewer">
-  <iframe id="viewer-frame" allowfullscreen></iframe>
-</div>
+      .viewer {
+        flex: 1;
+        overflow: hidden;
+        position: relative;
+        background: #1a1a1a;
+      }
+      .viewer embed {
+        width: 100%;
+        height: 100%;
+        border: none;
+        display: block;
+      }
+      .viewer img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+      .viewer video {
+        width: 100%;
+        height: 100%;
+        display: block;
+        background: #000;
+      }
 
-<script>
-var p = new URLSearchParams(window.location.search);
-var fileId = p.get('id');
-var fileName = p.get('name') || 'File';
-var parentId = p.get('parent');
-var parentName = p.get('parentName');
+      .download-only {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        gap: 20px;
+        padding: 40px;
+      }
+      .download-only .file-icon {
+        color: var(--bu-accent);
+        opacity: 0.5;
+      }
+      .download-only .file-icon svg {
+        width: 72px;
+        height: 72px;
+        fill: currentColor;
+      }
+      .download-only .file-msg {
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.5);
+        text-align: center;
+      }
+      .download-only .dl-big {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #fff;
+        padding: 12px 32px;
+        border-radius: 8px;
+        background: var(--bu-accent);
+        text-decoration: none;
+        transition: background 0.2s;
+      }
+      .download-only .dl-big:hover {
+        background: var(--bu-accent-light);
+      }
+      .download-only .dl-big svg {
+        width: 15px;
+        height: 15px;
+        fill: currentColor;
+      }
 
-document.getElementById('file-title').textContent = fileName;
-document.title = 'BainUltra \u2014 ' + fileName;
+      /* Hidden SVG icon templates */
+      #icon-templates {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SVG icon templates — cloned by JS, never modified with user data -->
+    <div id="icon-templates">
+      <svg id="tpl-back" viewBox="0 0 24 24">
+        <path
+          d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+        />
+      </svg>
+      <svg id="tpl-dl" viewBox="0 0 24 24">
+        <path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z" />
+      </svg>
+      <svg id="tpl-file" viewBox="0 0 24 24">
+        <path
+          d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"
+        />
+      </svg>
+    </div>
 
-var dlUrl = 'https://drive.google.com/uc?export=download&id=' + fileId;
-document.getElementById('dl-btn').href = dlUrl;
+    <div class="topbar">
+      <a class="back-btn" id="back-btn" href="../">
+        <span id="back-icon-slot"></span>
+        Back
+      </a>
+      <div class="file-title" id="file-title">Loading&hellip;</div>
+      <a class="dl-btn" id="dl-btn" href="#">
+        <span id="dl-icon-slot"></span>
+        Download
+      </a>
+    </div>
 
-if (parentId) {
-  var backUrl = '../view/?id=' + parentId + '&name=' + encodeURIComponent(parentName || 'Brand Kit');
-  if (p.get('grandparent')) {
-    backUrl += '&parent=' + p.get('grandparent') + '&parentName=' + encodeURIComponent(p.get('grandparentName') || '');
-  }
-  document.getElementById('back-btn').href = backUrl;
-}
+    <div class="viewer" id="viewer"></div>
 
-document.getElementById('viewer-frame').src =
-  'https://drive.google.com/file/d/' + fileId + '/preview';
+    <script>
+      var FILE_BASE = "../files/Brand Kit \u2014 Customer Share/";
 
-// Google Drive iframes push internal navigation entries onto the browser
-// history stack. When the user presses back and the URL hasn't changed,
-// it means we landed on one of those Drive-internal entries — skip it.
-var pageUrl = window.location.href;
-window.addEventListener('popstate', function() {
-  if (window.location.href === pageUrl) {
-    history.back();
-  }
-});
-</script>
+      // Clone an SVG icon template by id
+      function icon(tplId) {
+        return document.getElementById(tplId).cloneNode(true);
+      }
 
-</body>
+      // Insert cloned icons into topbar slots
+      document.getElementById("back-icon-slot").appendChild(icon("tpl-back"));
+      document.getElementById("dl-icon-slot").appendChild(icon("tpl-dl"));
+
+      var p = new URLSearchParams(window.location.search);
+      var filePath = p.get("path") || "";
+      var fileName = p.get("name") || filePath.split("/").pop() || "File";
+      var parentPath = p.get("parent");
+      var parentName = p.get("parentName") || "Brand Kit";
+
+      document.getElementById("file-title").textContent = fileName;
+      document.title = "BainUltra \u2014 " + fileName;
+
+      var fileUrl = FILE_BASE + filePath;
+
+      var dlBtn = document.getElementById("dl-btn");
+      dlBtn.href = fileUrl;
+      dlBtn.setAttribute("download", fileName);
+
+      if (parentPath !== null) {
+        document.getElementById("back-btn").href =
+          "../view/?path=" +
+          encodeURIComponent(parentPath) +
+          "&name=" +
+          encodeURIComponent(parentName);
+      }
+
+      var ext = filePath.split(".").pop().toLowerCase();
+      var viewer = document.getElementById("viewer");
+
+      if (ext === "pdf") {
+        var embed = document.createElement("embed");
+        embed.src = fileUrl;
+        embed.type = "application/pdf";
+        viewer.appendChild(embed);
+      } else if ({ jpg: 1, jpeg: 1, png: 1, gif: 1, webp: 1, svg: 1 }[ext]) {
+        var img = document.createElement("img");
+        img.src = fileUrl;
+        img.alt = fileName;
+        viewer.appendChild(img);
+      } else if ({ mp4: 1, mov: 1, webm: 1 }[ext]) {
+        var video = document.createElement("video");
+        video.src = fileUrl;
+        video.controls = true;
+        video.autoplay = true;
+        viewer.appendChild(video);
+      } else {
+        // Non-previewable — safe DOM construction, no innerHTML
+        var wrap = document.createElement("div");
+        wrap.className = "download-only";
+
+        var iconWrap = document.createElement("div");
+        iconWrap.className = "file-icon";
+        iconWrap.appendChild(icon("tpl-file"));
+
+        var msg = document.createElement("div");
+        msg.className = "file-msg";
+        msg.textContent = "This file type cannot be previewed in the browser.";
+
+        var label = ext ? ext.toUpperCase() + " file" : "File";
+        var dlBig = document.createElement("a");
+        dlBig.className = "dl-big";
+        dlBig.href = fileUrl;
+        dlBig.setAttribute("download", fileName);
+        dlBig.appendChild(icon("tpl-dl"));
+        dlBig.appendChild(document.createTextNode(" Download " + label));
+
+        wrap.appendChild(iconWrap);
+        wrap.appendChild(msg);
+        wrap.appendChild(dlBig);
+        viewer.appendChild(wrap);
+      }
+    </script>
+  </body>
 </html>
