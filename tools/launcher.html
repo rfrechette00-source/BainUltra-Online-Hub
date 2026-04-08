@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BainUltra — Terminal Launcher</title>
+<style>
+:root {
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --surface2: #1e1e1e;
+  --border: rgba(255,255,255,0.08);
+  --accent: #c8a87c;
+  --accent-light: #d4bc98;
+  --text: #fff;
+  --text-dim: rgba(255,255,255,0.45);
+  --text-mid: rgba(255,255,255,0.7);
+  --green: #4ade80;
+  --red: #f87171;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { height: 100%; font-family: 'SF Mono', 'Menlo', 'Monaco', monospace; }
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px 60px;
+}
+
+h1 {
+  font-family: -apple-system, 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.subtitle {
+  font-family: -apple-system, 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 36px;
+  letter-spacing: 0.04em;
+}
+
+/* Path config */
+.path-bar {
+  width: 100%;
+  max-width: 700px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.path-bar label {
+  font-size: 11px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.path-bar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--accent);
+  font-family: 'SF Mono', 'Menlo', monospace;
+  font-size: 13px;
+}
+
+/* Sections */
+.section {
+  width: 100%;
+  max-width: 700px;
+  margin-bottom: 24px;
+}
+.section-title {
+  font-family: -apple-system, 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  padding-left: 2px;
+}
+
+/* Command rows */
+.cmd-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cmd-row:hover { border-color: rgba(255,255,255,0.13); }
+.cmd-info { flex: 1; min-width: 0; }
+.cmd-desc {
+  font-family: -apple-system, 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--text-mid);
+  margin-bottom: 4px;
+}
+.cmd-text {
+  font-size: 12px;
+  color: rgba(200,168,124,0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cmd-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+button {
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-family: -apple-system, 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 7px 12px;
+  transition: all 0.15s;
+}
+.btn-copy {
+  background: rgba(255,255,255,0.07);
+  color: var(--text-mid);
+  border: 1px solid var(--border);
+}
+.btn-copy:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.btn-copy.copied { background: rgba(74,222,128,0.15); color: var(--green); border-color: rgba(74,222,128,0.3); }
+
+.btn-run {
+  background: var(--accent);
+  color: #000;
+}
+.btn-run:hover { background: var(--accent-light); }
+.btn-run:active { transform: scale(0.96); }
+
+/* Custom command */
+.custom-box {
+  width: 100%;
+  max-width: 700px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+.custom-box label {
+  font-family: -apple-system, 'Inter', sans-serif;
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+.custom-input-row { display: flex; gap: 8px; }
+.custom-box textarea {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--accent);
+  font-family: 'SF Mono', 'Menlo', monospace;
+  font-size: 12px;
+  padding: 10px 12px;
+  resize: vertical;
+  min-height: 60px;
+  outline: none;
+}
+.custom-box textarea:focus { border-color: rgba(200,168,124,0.4); }
+
+/* How it works */
+.info {
+  width: 100%;
+  max-width: 700px;
+  background: rgba(200,168,124,0.05);
+  border: 1px solid rgba(200,168,124,0.15);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-family: -apple-system, 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+.info strong { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<h1>BainUltra Terminal Launcher</h1>
+<p class="subtitle">Click "Run" → double-click the downloaded file → Terminal opens and runs the command</p>
+
+<div class="path-bar">
+  <label>Project path:</label>
+  <input type="text" id="projectPath" value="/Users/Shared/BainUltra-Online-Hub" placeholder="/Users/Shared/BainUltra-Online-Hub">
+</div>
+
+<div class="section">
+  <div class="section-title">Git — Sync</div>
+
+  <div class="cmd-row">
+    <div class="cmd-info">
+      <div class="cmd-desc">Pull latest changes from GitHub</div>
+      <div class="cmd-text">git pull origin claude/remove-exposed-api-key-ThrUa</div>
+    </div>
+    <div class="cmd-actions">
+      <button class="btn-copy" onclick="copyCmd(this, 'git pull origin claude/remove-exposed-api-key-ThrUa')">Copy</button>
+      <button class="btn-run" onclick="runCmd('git pull origin claude/remove-exposed-api-key-ThrUa', 'git-pull')">Run</button>
+    </div>
+  </div>
+
+  <div class="cmd-row">
+    <div class="cmd-info">
+      <div class="cmd-desc">Pull from main branch</div>
+      <div class="cmd-text">git pull origin main</div>
+    </div>
+    <div class="cmd-actions">
+      <button class="btn-copy" onclick="copyCmd(this, 'git pull origin main')">Copy</button>
+      <button class="btn-run" onclick="runCmd('git pull origin main', 'git-pull-main')">Run</button>
+    </div>
+  </div>
+
+  <div class="cmd-row">
+    <div class="cmd-info">
+      <div class="cmd-desc">Push changes to GitHub</div>
+      <div class="cmd-text">git push</div>
+    </div>
+    <div class="cmd-actions">
+      <button class="btn-copy" onclick="copyCmd(this, 'git push')">Copy</button>
+      <button class="btn-run" onclick="runCmd('git push', 'git-push')">Run</button>
+    </div>
+  </div>
+
+  <div class="cmd-row">
+    <div class="cmd-info">
+      <div class="cmd-desc">Check status — see what's changed</div>
+      <div class="cmd-text">git status</div>
+    </div>
+    <div class="cmd-actions">
+      <button class="btn-copy" onclick="copyCmd(this, 'git status')">Copy</button>
+      <button class="btn-run" onclick="runCmd('git status', 'git-status')">Run</button>
+    </div>
+  </div>
+
+  <div class="cmd-row">
+    <div class="cmd-info">
+      <div class="cmd-desc">Stage all changes and commit</div>
+      <div class="cmd-text">git add . && git commit -m "Update"</div>
+    </div>
+    <div class="cmd-actions">
+      <button class="btn-copy" onclick="copyCmd(this, 'git add . && git commit -m \"Update\"')">Copy</button>
+      <button class="btn-run" onclick="runCmd('git add . && git commit -m \"Update\"', 'git-commit')">Run</button>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Setup</div>
+
+  <div class="cmd-row">
+    <div class="cmd-info">
+      <div class="cmd-desc">Create brand-kit/config.js with API key</div>
+      <div class="cmd-text">echo "var GOOGLE_API_KEY = '...';" > brand-kit/config.js</div>
+    </div>
+    <div class="cmd-actions">
+      <button class="btn-copy" onclick="copyCmd(this, 'echo \"var GOOGLE_API_KEY = \'REDACTEDE\';\" > brand-kit/config.js')">Copy</button>
+      <button class="btn-run" onclick="runCmd('echo \"var GOOGLE_API_KEY = \'REDACTEDE\';\" > brand-kit/config.js', 'create-config')">Run</button>
+    </div>
+  </div>
+
+  <div class="cmd-row">
+    <div class="cmd-info">
+      <div class="cmd-desc">Open project in VS Code</div>
+      <div class="cmd-text">code .</div>
+    </div>
+    <div class="cmd-actions">
+      <button class="btn-copy" onclick="copyCmd(this, 'code .')">Copy</button>
+      <button class="btn-run" onclick="runCmd('code .', 'open-vscode')">Run</button>
+    </div>
+  </div>
+
+  <div class="cmd-row">
+    <div class="cmd-info">
+      <div class="cmd-desc">Serve site locally (requires Python 3)</div>
+      <div class="cmd-text">python3 -m http.server 8080</div>
+    </div>
+    <div class="cmd-actions">
+      <button class="btn-copy" onclick="copyCmd(this, 'python3 -m http.server 8080')">Copy</button>
+      <button class="btn-run" onclick="runCmd('python3 -m http.server 8080', 'serve-local')">Run</button>
+    </div>
+  </div>
+</div>
+
+<div class="custom-box">
+  <label>Custom Command</label>
+  <div class="custom-input-row">
+    <textarea id="customCmd" placeholder="Enter any terminal command..."></textarea>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <button class="btn-copy" onclick="copyCustom(this)">Copy</button>
+      <button class="btn-run" onclick="runCustom()">Run</button>
+    </div>
+  </div>
+</div>
+
+<div class="info">
+  <strong>How it works:</strong> Clicking "Run" downloads a <code>.terminal</code> file.
+  Double-click it in Finder or from your browser's download bar — macOS opens Terminal and runs the command automatically, starting from your project folder.
+  No installation required.
+</div>
+
+<script>
+function getPath() {
+  return document.getElementById('projectPath').value.trim() || '/Users/Shared/BainUltra-Online-Hub';
+}
+
+function runCmd(cmd, name) {
+  var path = getPath();
+  var fullCmd = 'cd ' + JSON.stringify(path) + ' && ' + cmd;
+  downloadTerminalFile(fullCmd, name);
+}
+
+function runCustom() {
+  var cmd = document.getElementById('customCmd').value.trim();
+  if (!cmd) return;
+  runCmd(cmd, 'custom-command');
+}
+
+function copyCustom(btn) {
+  var cmd = document.getElementById('customCmd').value.trim();
+  if (!cmd) return;
+  copyToClipboard(btn, 'cd ' + getPath() + ' && ' + cmd);
+}
+
+function copyCmd(btn, cmd) {
+  copyToClipboard(btn, 'cd ' + getPath() + ' && ' + cmd);
+}
+
+function copyToClipboard(btn, text) {
+  function onSuccess() {
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = orig;
+      btn.classList.remove('copied');
+    }, 1800);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(onSuccess);
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;top:-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    onSuccess();
+  }
+}
+
+function downloadTerminalFile(command, name) {
+  // Escape special XML characters
+  var escaped = command
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+
+  var plist = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n' +
+    '<plist version="1.0">\n<dict>\n' +
+    '  <key>CommandString</key>\n' +
+    '  <string>' + escaped + '</string>\n' +
+    '  <key>RunCommandAsShell</key>\n' +
+    '  <false/>\n' +
+    '  <key>name</key>\n' +
+    '  <string>' + name + '</string>\n' +
+    '  <key>ProfileCurrentVersion</key>\n' +
+    '  <real>2.07</real>\n' +
+    '</dict>\n</plist>';
+
+  var blob = new Blob([plist], { type: 'application/octet-stream' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = name + '.terminal';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
