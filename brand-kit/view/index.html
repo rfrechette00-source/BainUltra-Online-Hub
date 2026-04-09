@@ -147,13 +147,36 @@
         object-fit: cover;
         display: block;
       }
-      .file-thumb .icon-large {
-        color: var(--bu-accent);
-        opacity: 0.6;
+      .file-thumb .thumb-bg {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.18;
+        transition: opacity 0.3s;
+        pointer-events: none;
       }
-      .file-thumb .icon-large svg {
-        width: 48px;
-        height: 48px;
+      .file-card:hover .thumb-bg {
+        opacity: 0.3;
+      }
+      .folder-arrow-badge {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        width: 26px;
+        height: 26px;
+        background: rgba(200, 168, 124, 0.15);
+        border: 1px solid rgba(200, 168, 124, 0.3);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--bu-accent);
+        z-index: 1;
+      }
+      .folder-arrow-badge svg {
+        width: 13px;
+        height: 13px;
         fill: currentColor;
       }
       .ext-badge {
@@ -161,9 +184,9 @@
         bottom: 10px;
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(0, 0, 0, 0.6);
+        background: rgba(0, 0, 0, 0.55);
         border: 1px solid rgba(255, 255, 255, 0.12);
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(255, 255, 255, 0.55);
         font-size: 10px;
         font-weight: 600;
         letter-spacing: 0.08em;
@@ -172,32 +195,25 @@
         border-radius: 4px;
       }
       .file-info {
-        padding: 12px 14px;
+        padding: 10px 12px;
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
         gap: 8px;
       }
       .file-name {
+        flex: 1;
         font-size: 12px;
         font-weight: 500;
-        line-height: 1.4;
+        line-height: 1.3;
         word-break: break-word;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
       }
-      .file-meta {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .file-type {
-        font-size: 11px;
-        color: rgba(255, 255, 255, 0.3);
-        font-weight: 300;
-      }
       .file-action {
+        flex-shrink: 0;
         display: inline-flex;
         align-items: center;
         gap: 4px;
@@ -400,7 +416,7 @@
     </div>
 
     <script>
-      var FILE_BASE = "../files/Brand Kit \u2014 Customer Share/";
+      var FILE_BASE = "../files/BAINULTRA-ONLINE-HUB/Brand Kit/";
 
       var params = new URLSearchParams(window.location.search);
       var folderPath = params.get("path") || "";
@@ -477,9 +493,26 @@
         return wrap;
       }
 
+      function findFirstImage(node) {
+        if (!node.children) return null;
+        for (var i = 0; i < node.children.length; i++) {
+          var c = node.children[i];
+          if (c.type === "file" && /^(jpg|jpeg|png|gif)$/.test(c.ext || "")) {
+            return FILE_BASE + c.path;
+          }
+          if (c.type === "folder") {
+            var found = findFirstImage(c);
+            if (found) return found;
+          }
+        }
+        return null;
+      }
+
       function makeThumbFolder() {
         var thumb = el("div", "file-thumb");
-        thumb.appendChild(iconEl(ICON_FOLDER));
+        var badge = el("div", "folder-arrow-badge");
+        badge.innerHTML = ICON_ARROW; // static SVG only
+        thumb.appendChild(badge);
         return thumb;
       }
       function makeThumbImage(src, name) {
@@ -488,16 +521,11 @@
         img.src = src;
         img.alt = name;
         img.loading = "lazy";
-        img.addEventListener("error", function () {
-          thumb.removeChild(img);
-          thumb.appendChild(iconEl(ICON_FILE));
-        });
         thumb.appendChild(img);
         return thumb;
       }
-      function makeThumbIcon(svgStr, extLabel) {
+      function makeThumbIcon(extLabel) {
         var thumb = el("div", "file-thumb");
-        thumb.appendChild(iconEl(svgStr));
         if (extLabel) {
           var badge = el("div", "ext-badge");
           badge.textContent = extLabel;
@@ -505,20 +533,15 @@
         }
         return thumb;
       }
-      function makeFileInfo(name, typeLabel, actionLabel, actionIcon) {
+      function makeFileInfo(name, actionLabel, actionIcon) {
         var info = el("div", "file-info");
         var nameEl = el("div", "file-name");
         nameEl.textContent = name;
-        var meta = el("div", "file-meta");
-        var type = el("span", "file-type");
-        type.textContent = typeLabel;
         var action = el("span", "file-action");
         action.innerHTML = actionIcon; // static SVG only
         action.appendChild(document.createTextNode(" " + actionLabel));
-        meta.appendChild(type);
-        meta.appendChild(action);
         info.appendChild(nameEl);
-        info.appendChild(meta);
+        info.appendChild(action);
         return info;
       }
 
@@ -574,9 +597,7 @@
             "&parentName=" +
             encodeURIComponent(folderName);
           card.appendChild(makeThumbFolder());
-          card.appendChild(
-            makeFileInfo(item.name, "Folder", "Open", ICON_ARROW),
-          );
+          card.appendChild(makeFileInfo(item.name, "Open", ICON_ARROW));
           grid.appendChild(card);
         });
 
@@ -598,9 +619,7 @@
               })(fileUrl, item.name),
             );
             card.appendChild(makeThumbImage(fileUrl, item.name));
-            card.appendChild(
-              makeFileInfo(item.name, ext.toUpperCase(), "View", ""),
-            );
+            card.appendChild(makeFileInfo(item.name, "View", ""));
           } else {
             card.href =
               "../file/?path=" +
@@ -611,16 +630,8 @@
               encodeURIComponent(folderPath) +
               "&parentName=" +
               encodeURIComponent(folderName);
-            var iconSvg = ext === "pdf" ? ICON_PDF : ICON_FILE;
-            card.appendChild(makeThumbIcon(iconSvg, ext || "file"));
-            card.appendChild(
-              makeFileInfo(
-                item.name,
-                ext.toUpperCase() || "FILE",
-                "Open",
-                ICON_ARROW,
-              ),
-            );
+            card.appendChild(makeThumbIcon(ext || "file"));
+            card.appendChild(makeFileInfo(item.name, "Open", ICON_ARROW));
           }
           grid.appendChild(card);
         });

@@ -7,7 +7,7 @@ Run from repo root or brand-kit/ directory:
 import os, json
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-BASE_DIR = os.path.join(SCRIPT_DIR, "files", "Brand Kit \u2014 Customer Share")
+BASE_DIR = os.path.join(SCRIPT_DIR, "files", "BAINULTRA-ONLINE-HUB", "Brand Kit")
 OUTPUT = os.path.join(SCRIPT_DIR, "files", "manifest.json")
 
 SKIP_NAMES = {".DS_Store", ".gitkeep", "manifest.json"}
@@ -50,7 +50,7 @@ def build_tree(abs_path, rel_path=""):
 
 
 tree = {
-    "name": "Brand Kit \u2014 Customer Share",
+    "name": "Brand Kit",
     "path": "",
     "type": "folder",
     "children": build_tree(BASE_DIR),
