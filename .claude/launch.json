@@ -2,16 +2,58 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "Static Site (Python)",
+      "name": "main-live (3 tiles) (price book hidden)",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "4000"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4000",
+        "--directory",
+        "/Users/Shared/BainUltra-preview-main"
+      ],
       "port": 4000
     },
     {
-      "name": "Static Site (npx serve)",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-l", "8081", "."],
-      "port": 8081
+      "name": "main-twin (practice and drafting)",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4001",
+        "--directory",
+        "/Users/Shared/BainUltra-preview-main-draft"
+      ],
+      "port": 4001
+    },
+    {
+      "name": "main-twin (desktop preview)",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-c",
+        "cd /Users/Shared/BainUltra-preview-main && python3 -m http.server 4002"
+      ],
+      "port": 4002
+    },
+    {
+      "name": "main-twin (mobile preview)",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-c",
+        "cd /Users/Shared/BainUltra-preview-main && python3 mobile-server.py 4003"
+      ],
+      "port": 4003
+    },
+    {
+      "name": "draft (4 tiles) (price book shown)",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4004",
+        "--directory",
+        "/Users/Shared/BainUltra-Online-Hub"
+      ],
+      "port": 4004
     }
   ]
 }
