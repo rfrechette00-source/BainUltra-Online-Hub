@@ -494,22 +494,46 @@
       }
 
       function findFirstImage(node) {
-        if (!node.children) return null;
-        for (var i = 0; i < node.children.length; i++) {
-          var c = node.children[i];
-          if (c.type === "file" && /^(jpg|jpeg|png|gif)$/.test(c.ext || "")) {
-            return FILE_BASE + c.path;
-          }
-          if (c.type === "folder") {
-            var found = findFirstImage(c);
-            if (found) return found;
-          }
+        // Skip product renders: files with _1K., _Top., _Front., _Side., _ISO., or topview in name
+        function isRender(name) {
+          return /(_1k\.|_top\.|_front\.|_side\.|_iso\.|topview)/i.test(
+            name || "",
+          );
         }
-        return null;
+        // Two-pass: prefer jpg/jpeg (real photos) over png (often cutouts)
+        function search(n, jpgOnly) {
+          if (!n.children) return null;
+          for (var i = 0; i < n.children.length; i++) {
+            var c = n.children[i];
+            if (c.type === "file" && !isRender(c.name)) {
+              var ext = c.ext || "";
+              if (
+                jpgOnly
+                  ? /^(jpg|jpeg)$/.test(ext)
+                  : /^(jpg|jpeg|png|gif|webp)$/.test(ext)
+              ) {
+                return FILE_BASE + c.path;
+              }
+            }
+            if (c.type === "folder") {
+              var found = search(c, jpgOnly);
+              if (found) return found;
+            }
+          }
+          return null;
+        }
+        return search(node, true) || search(node, false);
       }
 
-      function makeThumbFolder() {
+      function makeThumbFolder(previewUrl) {
         var thumb = el("div", "file-thumb");
+        if (previewUrl) {
+          var img = document.createElement("img");
+          img.src = previewUrl;
+          img.alt = "";
+          img.loading = "lazy";
+          thumb.appendChild(img);
+        }
         var badge = el("div", "folder-arrow-badge");
         badge.innerHTML = ICON_ARROW; // static SVG only
         thumb.appendChild(badge);
@@ -596,7 +620,7 @@
             encodeURIComponent(folderPath) +
             "&parentName=" +
             encodeURIComponent(folderName);
-          card.appendChild(makeThumbFolder());
+          card.appendChild(makeThumbFolder(findFirstImage(item)));
           card.appendChild(makeFileInfo(item.name, "Open", ICON_ARROW));
           grid.appendChild(card);
         });
