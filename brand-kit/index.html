@@ -117,7 +117,7 @@
         line-height: 1.5;
       }
 
-      /* Folder grid — 4 columns on desktop, 4 columns on mobile */
+      /* Folder grid */
       .folders {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -211,6 +211,14 @@
         width: 12px;
         height: 12px;
         fill: currentColor;
+      }
+
+      .no-key-msg {
+        text-align: center;
+        font-size: 12px;
+        color: rgba(255,255,255,0.3);
+        padding: 8px 20px 0;
+        font-weight: 300;
       }
 
       @media (max-width: 500px) {
@@ -335,203 +343,221 @@
     </div>
 
     <div class="folders">
-      <a
-        class="folder-card"
-        href="view/?path=Marketing%20%26%20Advertising&name=Marketing%20%26%20Advertising"
-      >
-        <div
-          class="thumb-bg"
-          style="
-            background-image: url(&quot;files/BAINULTRA-ONLINE-HUB/Brand%20Kit/Marketing%20%26%20Advertising/Lifestyle%20Images/Web%20resolution/SHOT-008-1473.jpeg&quot;);
-          "
-        ></div>
+      <!-- Tile order matches the original layout -->
+      <a class="folder-card" href="#" data-folder-name="Marketing &amp; Advertising">
+        <div class="thumb-bg"></div>
         <div class="folder-icon">
           <svg viewBox="0 0 24 24">
-            <path
-              d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"
-            />
+            <path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
           </svg>
         </div>
         <div class="folder-name">Marketing &amp; Advertising</div>
         <div class="folder-arrow">
           Open folder
-          <svg viewBox="0 0 24 24">
-            <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
-          </svg>
+          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </div>
       </a>
 
-      <a
-        class="folder-card"
-        href="view/?path=Product%20Images&name=Product%20Images"
-      >
-        <div
-          class="thumb-bg"
-          style="
-            background-image: url(&quot;files/BAINULTRA-ONLINE-HUB/Brand%20Kit/Product%20Images/Charism/Charism-oval-crystal%20rock-HQ.jpg&quot;);
-          "
-        ></div>
+      <a class="folder-card" href="#" data-folder-name="Product Images">
+        <div class="thumb-bg"></div>
         <div class="folder-icon">
           <svg viewBox="0 0 24 24">
-            <path
-              d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"
-            />
+            <path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
           </svg>
         </div>
         <div class="folder-name">Product Images</div>
         <div class="folder-arrow">
           Open folder
-          <svg viewBox="0 0 24 24">
-            <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
-          </svg>
+          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </div>
       </a>
 
-      <a
-        class="folder-card"
-        href="view/?path=Mini%20Brochure%20Online&name=Mini%20Brochure%20Online"
-      >
-        <div
-          class="thumb-bg"
-          style="
-            background-image: url(&quot;files/BAINULTRA-ONLINE-HUB/Brand%20Kit/Marketing%20%26%20Advertising/Lifestyle%20Images/Web%20resolution/SHOT-001-0227.jpeg&quot;);
-          "
-        ></div>
+      <a class="folder-card" href="#" data-folder-name="Mini Brochure Online">
+        <div class="thumb-bg"></div>
         <div class="folder-icon">
           <svg viewBox="0 0 24 24">
-            <path
-              d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"
-            />
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
           </svg>
         </div>
         <div class="folder-name">Mini Brochure Online</div>
         <div class="folder-arrow">
           Open folder
-          <svg viewBox="0 0 24 24">
-            <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
-          </svg>
+          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </div>
       </a>
 
-      <a class="folder-card" href="order-forms-product-sheets/">
-        <div
-          class="thumb-bg"
-          style="
-            background-image: url(&quot;files/BAINULTRA-ONLINE-HUB/Brand%20Kit/Marketing%20%26%20Advertising/Lifestyle%20Images/Web%20resolution/SHOT-008-1530.jpeg&quot;);
-          "
-        ></div>
+      <!-- Special: always links to order-forms-product-sheets/ sub-page -->
+      <a class="folder-card" href="order-forms-product-sheets/" data-folder-name="Order Forms &amp; Product Sheets">
+        <div class="thumb-bg"></div>
         <div class="folder-icon">
           <svg viewBox="0 0 24 24">
-            <path
-              d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"
-            />
+            <path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
           </svg>
         </div>
         <div class="folder-name">Order Forms &amp; Product Sheets</div>
         <div class="folder-arrow">
           Open folder
-          <svg viewBox="0 0 24 24">
-            <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
-          </svg>
+          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </div>
       </a>
 
-      <a
-        class="folder-card"
-        href="view/?path=Collections%20by%20Model&name=Collections%20by%20Model"
-      >
-        <div
-          class="thumb-bg"
-          style="
-            background-image: url(&quot;files/BAINULTRA-ONLINE-HUB/Brand%20Kit/Marketing%20%26%20Advertising/Factory%20(Professional%20Images)/A7409583.jpg&quot;);
-          "
-        ></div>
+      <a class="folder-card" href="#" data-folder-name="Collections by Model">
+        <div class="thumb-bg"></div>
         <div class="folder-icon">
           <svg viewBox="0 0 24 24">
-            <path
-              d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"
-            />
+            <path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
           </svg>
         </div>
         <div class="folder-name">Collections by Model</div>
         <div class="folder-arrow">
           Open folder
-          <svg viewBox="0 0 24 24">
-            <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
-          </svg>
+          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </div>
       </a>
 
-      <a
-        class="folder-card"
-        href="view/?path=Installation%20Guides%3AManuals&name=Installation%20Guides"
-      >
-        <div
-          class="thumb-bg"
-          style="
-            background-image: url(&quot;files/BAINULTRA-ONLINE-HUB/Brand%20Kit/Marketing%20%26%20Advertising/Factory%20(Professional%20Images)/A7400359.jpg&quot;);
-          "
-        ></div>
+      <a class="folder-card" href="#" data-folder-name="Installation Guides &amp; Manuals">
+        <div class="thumb-bg"></div>
         <div class="folder-icon">
           <svg viewBox="0 0 24 24">
-            <path
-              d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"
-            />
+            <path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
           </svg>
         </div>
         <div class="folder-name">Installation Guides &amp; Manuals</div>
         <div class="folder-arrow">
           Open folder
-          <svg viewBox="0 0 24 24">
-            <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
-          </svg>
+          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </div>
       </a>
 
-      <a
-        class="folder-card"
-        href="view/?path=Brand%20Guidelines&name=Brand%20Guidelines"
-      >
-        <div
-          class="thumb-bg"
-          style="
-            background-image: url(&quot;files/BAINULTRA-ONLINE-HUB/Brand%20Kit/Marketing%20%26%20Advertising/Advertising%20Layouts/BU_magazine_5_5x4_5__0414.png&quot;);
-          "
-        ></div>
+      <a class="folder-card" href="#" data-folder-name="Brand Guidelines">
+        <div class="thumb-bg"></div>
         <div class="folder-icon">
           <svg viewBox="0 0 24 24">
-            <path
-              d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"
-            />
+            <path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
           </svg>
         </div>
         <div class="folder-name">Brand Guidelines</div>
         <div class="folder-arrow">
           Open folder
-          <svg viewBox="0 0 24 24">
-            <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
-          </svg>
+          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </div>
       </a>
 
-      <a class="folder-card" href="video/">
-        <div
-          class="thumb-bg"
-          style="
-            background-image: url(&quot;files/BAINULTRA-ONLINE-HUB/Brand%20Kit/Marketing%20%26%20Advertising/Factory%20(Professional%20Images)/A7400411v_1.jpg&quot;);
-          "
-        ></div>
+      <!-- Special: always links to video/ sub-page -->
+      <a class="folder-card" href="video/" data-folder-name="Showroom Video Loop">
+        <div class="thumb-bg"></div>
         <div class="folder-icon">
-          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         </div>
         <div class="folder-name">Showroom Video Loop</div>
         <div class="folder-arrow">
           Play video
-          <svg viewBox="0 0 24 24">
-            <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
-          </svg>
+          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </div>
       </a>
     </div>
+
+    <script src="config.js"></script>
+    <script>
+      (function () {
+        // Root Drive folder — the entire Brand Kit lives here
+        var ROOT_ID = '1d9qY3wMaK-eUJJFNlnnX84F9StrG0LQS';
+
+        // Tiles that keep their own sub-page links regardless of Drive folder ID
+        var LINK_OVERRIDES = {
+          'Order Forms & Product Sheets': 'order-forms-product-sheets/',
+          'Showroom Video Loop': 'video/'
+        };
+
+        // Drive folder names that differ from the displayed tile name
+        var NAME_ALIASES = {
+          'Installation Guides & Manuals': 'Installation Guides:Manuals'
+        };
+
+        function hasKey() {
+          return typeof GOOGLE_API_KEY === 'string'
+            && GOOGLE_API_KEY.length > 10
+            && GOOGLE_API_KEY !== 'YOUR_GOOGLE_API_KEY_HERE';
+        }
+
+        function driveList(q, pageSize) {
+          var url = 'https://www.googleapis.com/drive/v3/files'
+            + '?q=' + encodeURIComponent(q)
+            + '&fields=' + encodeURIComponent('files(id,name)')
+            + '&pageSize=' + (pageSize || 50)
+            + '&key=' + GOOGLE_API_KEY;
+          return fetch(url).then(function (r) { return r.json(); });
+        }
+
+        function thumbUrl(id) {
+          return 'https://drive.google.com/thumbnail?id=' + id + '&sz=w400';
+        }
+
+        // Load thumbnail for a folder — tries direct images, then first subfolder's images
+        function loadThumb(folderId, el) {
+          driveList("'" + folderId + "' in parents and mimeType contains 'image/' and trashed = false", 5)
+            .then(function (d) {
+              if (d.files && d.files.length) {
+                el.style.backgroundImage = 'url(' + thumbUrl(d.files[0].id) + ')';
+                return;
+              }
+              // No direct images — look one level deeper
+              return driveList("'" + folderId + "' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false", 3)
+                .then(function (sub) {
+                  if (!sub.files || !sub.files.length) return;
+                  // Try each subfolder until we find an image
+                  var i = 0;
+                  function tryNext() {
+                    if (i >= sub.files.length) return;
+                    var sfId = sub.files[i++].id;
+                    driveList("'" + sfId + "' in parents and mimeType contains 'image/' and trashed = false", 3)
+                      .then(function (d2) {
+                        if (d2.files && d2.files.length) {
+                          el.style.backgroundImage = 'url(' + thumbUrl(d2.files[0].id) + ')';
+                        } else {
+                          tryNext();
+                        }
+                      });
+                  }
+                  tryNext();
+                });
+            })
+            .catch(function () {});
+        }
+
+        function init() {
+          if (!hasKey()) return;
+
+          // Fetch all top-level folders in the root
+          driveList("'" + ROOT_ID + "' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false", 50)
+            .then(function (data) {
+              var byName = {};
+              (data.files || []).forEach(function (f) { byName[f.name] = f.id; });
+
+              var tiles = document.querySelectorAll('[data-folder-name]');
+              tiles.forEach(function (tile) {
+                // data-folder-name uses HTML entities; get the decoded text
+                var displayName = tile.querySelector('.folder-name').textContent.trim();
+                var alias = NAME_ALIASES[displayName];
+                var folderId = byName[displayName] || (alias && byName[alias]);
+                if (!folderId) return;
+
+                // Update link (unless this tile has its own sub-page)
+                if (!LINK_OVERRIDES[displayName]) {
+                  tile.href = 'view/?folderId=' + folderId + '&name=' + encodeURIComponent(displayName);
+                }
+
+                // Populate thumbnail
+                var thumb = tile.querySelector('.thumb-bg');
+                if (thumb) loadThumb(folderId, thumb);
+              });
+            })
+            .catch(function () {});
+        }
+
+        // config.js is loaded synchronously above; init immediately
+        init();
+      })();
+    </script>
   </body>
 </html>

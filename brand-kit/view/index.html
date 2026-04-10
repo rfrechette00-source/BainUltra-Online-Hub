@@ -16,17 +16,10 @@
         --bu-accent: #c8a87c;
         --bu-accent-light: #d4bc98;
       }
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
       html {
         height: 100%;
-        font-family:
-          "Inter",
-          -apple-system,
-          sans-serif;
+        font-family: "Inter", -apple-system, sans-serif;
         background: #000;
       }
       body {
@@ -46,19 +39,12 @@
         align-items: center;
         width: 100%;
       }
-      .logo-mark {
-        width: 180px;
-        max-width: 50vw;
-        margin-bottom: 8px;
-      }
-      .logo-mark svg {
-        width: 100%;
-        height: auto;
-      }
+      .logo-mark { width: 180px; max-width: 50vw; margin-bottom: 8px; }
+      .logo-mark svg { width: 100%; height: auto; }
       .tagline {
         font-size: 11px;
         font-weight: 300;
-        color: rgba(255, 255, 255, 0.35);
+        color: rgba(255,255,255,0.35);
         letter-spacing: 0.15em;
         text-transform: uppercase;
       }
@@ -68,32 +54,20 @@
         gap: 6px;
         font-size: 12px;
         font-weight: 500;
-        color: rgba(255, 255, 255, 0.35);
+        color: rgba(255,255,255,0.35);
         text-decoration: none;
         letter-spacing: 0.05em;
         margin-top: 14px;
         transition: color 0.2s;
       }
-      .back-link:hover {
-        color: rgba(255, 255, 255, 0.65);
-      }
-      .back-link svg {
-        width: 14px;
-        height: 14px;
-        fill: currentColor;
-      }
+      .back-link:hover { color: rgba(255,255,255,0.65); }
+      .back-link svg { width: 14px; height: 14px; fill: currentColor; }
       .divider {
         width: 60px;
         height: 1px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--bu-accent),
-          transparent
-        );
+        background: linear-gradient(90deg, transparent, var(--bu-accent), transparent);
         margin: 20px auto 16px;
       }
-
       .folder-heading {
         text-align: center;
         padding: 0 20px 24px;
@@ -105,7 +79,6 @@
         font-weight: 600;
         letter-spacing: -0.02em;
       }
-
       .file-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -115,8 +88,8 @@
         padding: 0 20px 60px;
       }
       .file-card {
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
         border-radius: 12px;
         overflow: hidden;
         transition: all 0.2s;
@@ -127,14 +100,14 @@
         flex-direction: column;
       }
       .file-card:hover {
-        background: rgba(255, 255, 255, 0.07);
-        border-color: rgba(200, 168, 124, 0.25);
+        background: rgba(255,255,255,0.07);
+        border-color: rgba(200,168,124,0.25);
         transform: translateY(-2px);
       }
       .file-thumb {
         width: 100%;
         aspect-ratio: 4/3;
-        background: rgba(255, 255, 255, 0.03);
+        background: rgba(255,255,255,0.03);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -147,26 +120,14 @@
         object-fit: cover;
         display: block;
       }
-      .file-thumb .thumb-bg {
-        position: absolute;
-        inset: 0;
-        background-size: cover;
-        background-position: center;
-        opacity: 0.18;
-        transition: opacity 0.3s;
-        pointer-events: none;
-      }
-      .file-card:hover .thumb-bg {
-        opacity: 0.3;
-      }
       .folder-arrow-badge {
         position: absolute;
         bottom: 10px;
         right: 10px;
         width: 26px;
         height: 26px;
-        background: rgba(200, 168, 124, 0.15);
-        border: 1px solid rgba(200, 168, 124, 0.3);
+        background: rgba(200,168,124,0.15);
+        border: 1px solid rgba(200,168,124,0.3);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -174,19 +135,15 @@
         color: var(--bu-accent);
         z-index: 1;
       }
-      .folder-arrow-badge svg {
-        width: 13px;
-        height: 13px;
-        fill: currentColor;
-      }
+      .folder-arrow-badge svg { width: 13px; height: 13px; fill: currentColor; }
       .ext-badge {
         position: absolute;
         bottom: 10px;
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(0, 0, 0, 0.55);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        color: rgba(255, 255, 255, 0.55);
+        background: rgba(0,0,0,0.55);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.55);
         font-size: 10px;
         font-weight: 600;
         letter-spacing: 0.08em;
@@ -194,6 +151,17 @@
         padding: 3px 8px;
         border-radius: 4px;
       }
+      .folder-icon-bg {
+        width: 48px;
+        height: 48px;
+        background: rgba(200,168,124,0.08);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--bu-accent);
+      }
+      .folder-icon-bg svg { width: 24px; height: 24px; fill: currentColor; }
       .file-info {
         padding: 10px 12px;
         display: flex;
@@ -222,42 +190,33 @@
         color: var(--bu-accent);
         padding: 4px 10px;
         border-radius: 5px;
-        background: rgba(200, 168, 124, 0.1);
-        border: 1px solid rgba(200, 168, 124, 0.15);
+        background: rgba(200,168,124,0.1);
+        border: 1px solid rgba(200,168,124,0.15);
       }
-      .file-action svg {
-        width: 11px;
-        height: 11px;
-        fill: currentColor;
-      }
-
+      .file-action svg { width: 11px; height: 11px; fill: currentColor; }
       .status-msg {
         text-align: center;
         padding: 80px 20px;
         font-size: 14px;
-        color: rgba(255, 255, 255, 0.4);
+        color: rgba(255,255,255,0.4);
         font-weight: 300;
       }
       .status-msg .spinner {
         width: 28px;
         height: 28px;
-        border: 2px solid rgba(200, 168, 124, 0.2);
+        border: 2px solid rgba(200,168,124,0.2);
         border-top-color: var(--bu-accent);
         border-radius: 50%;
         animation: spin 0.8s linear infinite;
         margin: 0 auto 14px;
       }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
+      @keyframes spin { to { transform: rotate(360deg); } }
 
       .lightbox {
         position: fixed;
         inset: 0;
         z-index: 1000;
-        background: rgba(0, 0, 0, 0.92);
+        background: rgba(0,0,0,0.92);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -265,20 +224,13 @@
         pointer-events: none;
         transition: opacity 0.2s;
       }
-      .lightbox.active {
-        opacity: 1;
-        pointer-events: all;
-      }
-      .lightbox img {
-        max-width: 90vw;
-        max-height: 85vh;
-        border-radius: 8px;
-      }
+      .lightbox.active { opacity: 1; pointer-events: all; }
+      .lightbox img { max-width: 90vw; max-height: 85vh; border-radius: 8px; }
       .lightbox-close {
         position: absolute;
         top: 20px;
         right: 24px;
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255,255,255,0.1);
         border: none;
         color: #fff;
         width: 36px;
@@ -304,27 +256,17 @@
         border-radius: 8px;
         text-decoration: none;
       }
-      .lightbox-dl svg {
-        width: 14px;
-        height: 14px;
-        fill: currentColor;
-      }
+      .lightbox-dl svg { width: 14px; height: 14px; fill: currentColor; }
 
       @media (max-width: 600px) {
-        .header {
-          padding: 30px 16px 12px;
-        }
+        .header { padding: 30px 16px 12px; }
         .file-grid {
           grid-template-columns: repeat(2, 1fr);
           gap: 10px;
           padding: 0 14px 40px;
         }
-        .file-info {
-          padding: 10px;
-        }
-        .file-name {
-          font-size: 11px;
-        }
+        .file-info { padding: 10px; }
+        .file-name { font-size: 11px; }
       }
     </style>
   </head>
@@ -332,64 +274,23 @@
     <div class="header">
       <div class="logo-mark">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2015 1000">
-          <defs>
-            <style>
-              .st0 {
-                fill: #c8a87c;
-              }
-            </style>
-          </defs>
-          <path
-            class="st0"
-            d="M1744.68,563.21h-14.94v-5.47h36.09v5.47h-14.94v36.92h-6.2v-36.92ZM1772.52,557.74h8.45l12.99,36.04,12.99-36.04h8.5v42.38h-6.25v-22.51l.05-10.21h-.05l-11.77,32.77h-6.93l-11.77-32.77h-.05l.05,10.21v22.51h-6.2v-42.38Z"
-          />
-          <rect
-            class="st0"
-            x="1110.54"
-            y="469.86"
-            width="35.58"
-            height="332.59"
-          />
-          <path
-            class="st0"
-            d="M1227.82,734.6v-137.67h-37.79v-30.28h37.79v-58.78h35.58v58.78h56.36v30.28h-56.36v133.91c0,34.7,12.82,41.33,42.43,41.33h12.15v30.28h-21.66c-50.61,0-68.51-16.35-68.51-67.85"
-          />
-          <path
-            class="st0"
-            d="M1371.85,566.66h35.58v44.87c12.38-27.41,37.57-47.3,76.24-47.3h5.09v34.69h-11.05c-46.63,0-70.28,28.73-70.28,81.11v122.43h-35.58v-235.8Z"
-          />
-          <path
-            class="st0"
-            d="M1671.46,706.32l.22-23.2c-96.8,3.1-129.94,19.67-129.94,55.25v.22c0,28.73,22.99,42.66,54.81,42.66,41.54,0,74.92-23.21,74.92-74.93M1504.16,739.69v-.44c0-59,67.62-81.32,167.07-82.87v-17.9c0-36.68-22.54-49.28-57.45-49.28-38.46,0-60.77,14.36-61.44,47.73h-36.24c1.33-49.94,41.33-75.8,98.34-75.8s92.81,22.11,92.37,81.77l-.44,79.56c0,35.14.89,56.36,5.75,80h-35.14c-1.76-11.49-2.42-20.78-3.09-35.58-16.79,27.84-44.85,41.54-86.41,41.54-47.73,0-83.31-26.07-83.31-68.73"
-          />
-          <path
-            class="st0"
-            d="M385.81,412.66v-.44c0-61.66-33.15-93.49-76.46-93.49s-76.24,32.04-76.24,93.49v.44c0,61.43,33.36,93.47,76.24,93.47s76.46-31.83,76.46-93.47M234.21,490.66v39.56h-35.58V197.63h35.58v136.58c13.92-26.3,42.87-45.31,80.66-45.31,59.22,0,108.51,45.08,108.51,123.32v.44c0,78.23-49.28,123.53-108.51,123.53-37.79,0-66.75-19.22-80.66-45.53"
-          />
-          <path
-            class="st0"
-            d="M628.01,434.09l.22-23.2c-96.8,3.1-129.94,19.67-129.94,55.25v.22c0,28.73,22.99,42.66,54.81,42.66,41.54,0,74.92-23.21,74.92-74.93M460.71,467.46v-.44c0-59,67.62-81.32,167.07-82.87v-17.9c0-36.68-22.54-49.28-57.45-49.28-38.46,0-60.77,14.36-61.44,47.73h-36.24c1.33-49.94,41.33-75.8,98.34-75.8s92.81,22.11,92.37,81.77l-.44,79.56c0,35.14.89,56.36,5.75,80h-35.14c-1.76-11.49-2.42-20.78-3.09-35.58-16.79,27.84-44.85,41.54-86.41,41.54-47.73,0-83.31-26.07-83.31-68.73"
-          />
-          <path
-            class="st0"
-            d="M732.3,294.43h35.58v235.8h-35.58v-235.8ZM732.3,197.63h35.58v50.17h-35.58v-50.17Z"
-          />
-          <path
-            class="st0"
-            d="M840.51,294.43h35.58v33.59c14.59-23.43,37.57-39.12,74.47-39.12,57.46,0,87.51,37.13,87.51,100.11v141.22h-35.58v-134.36c0-51.05-22.54-76.69-63.19-76.69s-63.21,28.95-63.21,78.9v132.15h-35.58v-235.8Z"
-          />
-          <path
-            class="st0"
-            d="M1038.07,802.23h-35.58v-33.59c-14.59,23.43-37.57,39.12-74.47,39.12-57.46,0-87.51-37.13-87.51-100.11v-141.22h35.58v134.36c0,51.05,22.54,76.69,63.2,76.69s63.21-28.95,63.21-78.9v-132.15h35.58v235.8Z"
-          />
+          <defs><style>.st0{fill:#c8a87c;}</style></defs>
+          <path class="st0" d="M1744.68,563.21h-14.94v-5.47h36.09v5.47h-14.94v36.92h-6.2v-36.92ZM1772.52,557.74h8.45l12.99,36.04,12.99-36.04h8.5v42.38h-6.25v-22.51l.05-10.21h-.05l-11.77,32.77h-6.93l-11.77-32.77h-.05l.05,10.21v22.51h-6.2v-42.38Z"/>
+          <rect class="st0" x="1110.54" y="469.86" width="35.58" height="332.59"/>
+          <path class="st0" d="M1227.82,734.6v-137.67h-37.79v-30.28h37.79v-58.78h35.58v58.78h56.36v30.28h-56.36v133.91c0,34.7,12.82,41.33,42.43,41.33h12.15v30.28h-21.66c-50.61,0-68.51-16.35-68.51-67.85"/>
+          <path class="st0" d="M1371.85,566.66h35.58v44.87c12.38-27.41,37.57-47.3,76.24-47.3h5.09v34.69h-11.05c-46.63,0-70.28,28.73-70.28,81.11v122.43h-35.58v-235.8Z"/>
+          <path class="st0" d="M1671.46,706.32l.22-23.2c-96.8,3.1-129.94,19.67-129.94,55.25v.22c0,28.73,22.99,42.66,54.81,42.66,41.54,0,74.92-23.21,74.92-74.93M1504.16,739.69v-.44c0-59,67.62-81.32,167.07-82.87v-17.9c0-36.68-22.54-49.28-57.45-49.28-38.46,0-60.77,14.36-61.44,47.73h-36.24c1.33-49.94,41.33-75.8,98.34-75.8s92.81,22.11,92.37,81.77l-.44,79.56c0,35.14.89,56.36,5.75,80h-35.14c-1.76-11.49-2.42-20.78-3.09-35.58-16.79,27.84-44.85,41.54-86.41,41.54-47.73,0-83.31-26.07-83.31-68.73"/>
+          <path class="st0" d="M385.81,412.66v-.44c0-61.66-33.15-93.49-76.46-93.49s-76.24,32.04-76.24,93.49v.44c0,61.43,33.36,93.47,76.24,93.47s76.46-31.83,76.46-93.47M234.21,490.66v39.56h-35.58V197.63h35.58v136.58c13.92-26.3,42.87-45.31,80.66-45.31,59.22,0,108.51,45.08,108.51,123.32v.44c0,78.23-49.28,123.53-108.51,123.53-37.79,0-66.75-19.22-80.66-45.53"/>
+          <path class="st0" d="M628.01,434.09l.22-23.2c-96.8,3.1-129.94,19.67-129.94,55.25v.22c0,28.73,22.99,42.66,54.81,42.66,41.54,0,74.92-23.21,74.92-74.93M460.71,467.46v-.44c0-59,67.62-81.32,167.07-82.87v-17.9c0-36.68-22.54-49.28-57.45-49.28-38.46,0-60.77,14.36-61.44,47.73h-36.24c1.33-49.94,41.33-75.8,98.34-75.8s92.81,22.11,92.37,81.77l-.44,79.56c0,35.14.89,56.36,5.75,80h-35.14c-1.76-11.49-2.42-20.78-3.09-35.58-16.79,27.84-44.85,41.54-86.41,41.54-47.73,0-83.31-26.07-83.31-68.73"/>
+          <path class="st0" d="M732.3,294.43h35.58v235.8h-35.58v-235.8ZM732.3,197.63h35.58v50.17h-35.58v-50.17Z"/>
+          <path class="st0" d="M840.51,294.43h35.58v33.59c14.59-23.43,37.57-39.12,74.47-39.12,57.46,0,87.51,37.13,87.51,100.11v141.22h-35.58v-134.36c0-51.05-22.54-76.69-63.19-76.69s-63.21,28.95-63.21,78.9v132.15h-35.58v-235.8Z"/>
+          <path class="st0" d="M1038.07,802.23h-35.58v-33.59c-14.59,23.43-37.57,39.12-74.47,39.12-57.46,0-87.51-37.13-87.51-100.11v-141.22h35.58v134.36c0,51.05,22.54,76.69,63.2,76.69s63.21-28.95,63.21-78.9v-132.15h35.58v235.8Z"/>
         </svg>
       </div>
       <div class="tagline">recover from the world</div>
       <a class="back-link" id="back-link" href="../">
         <svg viewBox="0 0 24 24">
-          <path
-            d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
-          />
+          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
         </svg>
         <span id="back-label">Back to Brand Kit</span>
       </a>
@@ -407,313 +308,327 @@
     <div class="lightbox" id="lightbox">
       <button class="lightbox-close" id="lb-close">&times;</button>
       <img id="lightbox-img" src="" alt="" />
-      <a class="lightbox-dl" id="lightbox-dl" href="#">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z" />
-        </svg>
+      <a class="lightbox-dl" id="lightbox-dl" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>
         Download
       </a>
     </div>
 
+    <script src="../config.js"></script>
     <script>
-      var FILE_BASE = "../../(Tile A) Brand-Kit/files/Brand Kit/";
+      (function () {
+        // ── URL params ────────────────────────────────────────────────────────────────
+        var params    = new URLSearchParams(window.location.search);
+        var folderId  = params.get('folderId') || '';
+        var folderName = params.get('name') || 'Brand Kit';
+        var parentId   = params.get('parentId');
+        var parentName = params.get('parentName') || 'Brand Kit';
 
-      var params = new URLSearchParams(window.location.search);
-      var folderPath = params.get("path") || "";
-      var folderName =
-        params.get("name") || folderPath.split("/").pop() || "Brand Kit";
-      var parentPath = params.get("parent");
-      var parentName = params.get("parentName") || "Brand Kit";
+        document.getElementById('folder-title').textContent = folderName;
+        document.title = 'BainUltra \u2014 ' + folderName;
 
-      document.getElementById("folder-title").textContent = folderName;
-      document.title = "BainUltra \u2014 " + folderName;
-
-      if (parentPath !== null) {
-        var bl = document.getElementById("back-link");
-        bl.href =
-          "?path=" +
-          encodeURIComponent(parentPath) +
-          "&name=" +
-          encodeURIComponent(parentName);
-        document.getElementById("back-label").textContent =
-          "Back to " + parentName;
-      }
-
-      // ── Lightbox ──────────────────────────────────────────────────────────────────
-      var lightbox = document.getElementById("lightbox");
-      document
-        .getElementById("lb-close")
-        .addEventListener("click", closeLightbox);
-      lightbox.addEventListener("click", function (e) {
-        if (e.target === lightbox) closeLightbox();
-      });
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape") closeLightbox();
-      });
-
-      function openLightbox(src, name) {
-        document.getElementById("lightbox-img").src = src;
-        var dl = document.getElementById("lightbox-dl");
-        dl.href = src;
-        dl.setAttribute("download", name);
-        lightbox.classList.add("active");
-      }
-      function closeLightbox() {
-        lightbox.classList.remove("active");
-        document.getElementById("lightbox-img").src = "";
-      }
-
-      // ── File type helpers ─────────────────────────────────────────────────────────
-      var IMAGE_EXTS = { jpg: 1, jpeg: 1, png: 1, gif: 1, webp: 1 };
-      function isImage(ext) {
-        return !!IMAGE_EXTS[ext];
-      }
-
-      // ── SVG icon templates (static, no user data) ─────────────────────────────────
-      var ICON_FOLDER =
-        '<svg viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>';
-      var ICON_PDF =
-        '<svg viewBox="0 0 24 24"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/></svg>';
-      var ICON_FILE =
-        '<svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>';
-      var ICON_ARROW =
-        '<svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>';
-      var ICON_DL =
-        '<svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>';
-
-      // ── DOM builder helpers (safe — no user data via innerHTML) ───────────────────
-      function el(tag, cls) {
-        var e = document.createElement(tag);
-        if (cls) e.className = cls;
-        return e;
-      }
-      function iconEl(svgStr) {
-        var wrap = el("div", "icon-large");
-        wrap.innerHTML = svgStr; // static SVG only
-        return wrap;
-      }
-
-      function findFirstImage(node) {
-        // Skip product renders: files with _1K., _Top., _Front., _Side., _ISO., or topview in name
-        function isRender(name) {
-          return /(_1k\.|_top\.|_front\.|_side\.|_iso\.|topview)/i.test(
-            name || "",
-          );
+        // Update back link
+        if (parentId) {
+          var bl = document.getElementById('back-link');
+          bl.href = '?folderId=' + encodeURIComponent(parentId)
+            + '&name=' + encodeURIComponent(parentName);
+          document.getElementById('back-label').textContent = 'Back to ' + parentName;
         }
-        // Two-pass: prefer jpg/jpeg (real photos) over png (often cutouts)
-        function search(n, jpgOnly) {
-          if (!n.children) return null;
-          for (var i = 0; i < n.children.length; i++) {
-            var c = n.children[i];
-            if (c.type === "file" && !isRender(c.name)) {
-              var ext = c.ext || "";
-              if (
-                jpgOnly
-                  ? /^(jpg|jpeg)$/.test(ext)
-                  : /^(jpg|jpeg|png|gif|webp)$/.test(ext)
-              ) {
-                return FILE_BASE + c.path;
+
+        // ── Lightbox ──────────────────────────────────────────────────────────────────
+        var lightbox = document.getElementById('lightbox');
+        document.getElementById('lb-close').addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', function (e) { if (e.target === lightbox) closeLightbox(); });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLightbox(); });
+
+        function openLightbox(imgUrl, dlUrl, name) {
+          document.getElementById('lightbox-img').src = imgUrl;
+          var dl = document.getElementById('lightbox-dl');
+          dl.href = dlUrl;
+          lightbox.classList.add('active');
+        }
+        function closeLightbox() {
+          lightbox.classList.remove('active');
+          document.getElementById('lightbox-img').src = '';
+        }
+
+        // ── Drive helpers ─────────────────────────────────────────────────────────────
+        var IMAGE_MIME = /^image\//;
+        var VIDEO_MIME = /^video\//;
+        var PDF_MIME   = 'application/pdf';
+        var FOLDER_MIME = 'application/vnd.google-apps.folder';
+
+        function hasKey() {
+          return typeof GOOGLE_API_KEY === 'string'
+            && GOOGLE_API_KEY.length > 10
+            && GOOGLE_API_KEY !== 'YOUR_GOOGLE_API_KEY_HERE';
+        }
+
+        function driveList(q, fields, pageSize) {
+          return fetch(
+            'https://www.googleapis.com/drive/v3/files'
+            + '?q=' + encodeURIComponent(q)
+            + '&fields=' + encodeURIComponent(fields || 'files(id,name,mimeType)')
+            + '&orderBy=' + encodeURIComponent('folder,name')
+            + '&pageSize=' + (pageSize || 100)
+            + '&key=' + GOOGLE_API_KEY
+          ).then(function (r) { return r.json(); });
+        }
+
+        function thumbUrl(id) {
+          return 'https://drive.google.com/thumbnail?id=' + id + '&sz=w400';
+        }
+        function viewUrl(id) {
+          return 'https://drive.google.com/uc?export=view&id=' + id;
+        }
+        function dlUrl(id) {
+          return 'https://drive.google.com/uc?export=download&id=' + id;
+        }
+        function previewUrl(id) {
+          return 'https://drive.google.com/file/d/' + id + '/preview';
+        }
+
+        // Extension from filename
+        function extOf(name) {
+          var parts = (name || '').split('.');
+          return parts.length > 1 ? parts[parts.length - 1].toLowerCase() : '';
+        }
+
+        // ── DOM helpers ───────────────────────────────────────────────────────────────
+        var ICON_FOLDER = '<svg viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>';
+        var ICON_ARROW  = '<svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>';
+        var ICON_DL     = '<svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>';
+
+        function el(tag, cls) {
+          var e = document.createElement(tag);
+          if (cls) e.className = cls;
+          return e;
+        }
+
+        // ── Load thumbnail for a folder ───────────────────────────────────────────────
+        function loadFolderThumb(folId, imgEl) {
+          // 1. direct images
+          driveList("'" + folId + "' in parents and mimeType contains 'image/' and trashed = false", 'files(id)', 5)
+            .then(function (d) {
+              if (d.files && d.files.length) {
+                imgEl.src = thumbUrl(d.files[0].id);
+                imgEl.style.display = '';
+                return;
               }
-            }
-            if (c.type === "folder") {
-              var found = search(c, jpgOnly);
-              if (found) return found;
-            }
-          }
-          return null;
-        }
-        return search(node, true) || search(node, false);
-      }
-
-      function makeThumbFolder(previewUrl) {
-        var thumb = el("div", "file-thumb");
-        if (previewUrl) {
-          var img = document.createElement("img");
-          img.src = previewUrl;
-          img.alt = "";
-          img.loading = "lazy";
-          thumb.appendChild(img);
-        }
-        var badge = el("div", "folder-arrow-badge");
-        badge.innerHTML = ICON_ARROW; // static SVG only
-        thumb.appendChild(badge);
-        return thumb;
-      }
-      function makeThumbImage(src, name) {
-        var thumb = el("div", "file-thumb");
-        var img = document.createElement("img");
-        img.src = src;
-        img.alt = name;
-        img.loading = "lazy";
-        thumb.appendChild(img);
-        return thumb;
-      }
-      function makeThumbIcon(extLabel) {
-        var thumb = el("div", "file-thumb");
-        if (extLabel) {
-          var badge = el("div", "ext-badge");
-          badge.textContent = extLabel;
-          thumb.appendChild(badge);
-        }
-        return thumb;
-      }
-      function makeFileInfo(name, actionLabel, actionIcon) {
-        var info = el("div", "file-info");
-        var nameEl = el("div", "file-name");
-        nameEl.textContent = name;
-        var action = el("span", "file-action");
-        action.innerHTML = actionIcon; // static SVG only
-        action.appendChild(document.createTextNode(" " + actionLabel));
-        info.appendChild(nameEl);
-        info.appendChild(action);
-        return info;
-      }
-
-      // ── Manifest tree navigation ──────────────────────────────────────────────────
-      function getNodeAtPath(tree, path) {
-        if (!path) return tree;
-        var parts = path.split("/");
-        var node = tree;
-        for (var i = 0; i < parts.length; i++) {
-          if (!node.children) return null;
-          var found = null;
-          for (var j = 0; j < node.children.length; j++) {
-            if (node.children[j].name === parts[i]) {
-              found = node.children[j];
-              break;
-            }
-          }
-          if (!found) return null;
-          node = found;
-        }
-        return node;
-      }
-
-      // ── Render grid ───────────────────────────────────────────────────────────────
-      function renderFiles(node) {
-        var container = document.getElementById("content");
-        var items = node.children || [];
-        if (!items.length) {
-          var msg = el("div", "status-msg");
-          msg.textContent = "This folder is empty.";
-          container.appendChild(msg);
-          return;
+              // 2. first subfolder's images
+              return driveList("'" + folId + "' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false", 'files(id)', 3)
+                .then(function (sub) {
+                  if (!sub.files || !sub.files.length) return;
+                  var i = 0;
+                  function tryNext() {
+                    if (i >= sub.files.length) return;
+                    var sfId = sub.files[i++].id;
+                    driveList("'" + sfId + "' in parents and mimeType contains 'image/' and trashed = false", 'files(id)', 3)
+                      .then(function (d2) {
+                        if (d2.files && d2.files.length) {
+                          imgEl.src = thumbUrl(d2.files[0].id);
+                          imgEl.style.display = '';
+                        } else {
+                          tryNext();
+                        }
+                      });
+                  }
+                  tryNext();
+                });
+            })
+            .catch(function () {});
         }
 
-        var folders = items.filter(function (i) {
-          return i.type === "folder";
-        });
-        var files = items.filter(function (i) {
-          return i.type === "file";
-        });
-        var grid = el("div", "file-grid");
+        // ── Render grid ───────────────────────────────────────────────────────────────
+        function renderFiles(items) {
+          var container = document.getElementById('content');
+          container.textContent = '';
 
-        folders.forEach(function (item) {
-          var card = document.createElement("a");
-          card.className = "file-card";
-          card.href =
-            "?path=" +
-            encodeURIComponent(item.path) +
-            "&name=" +
-            encodeURIComponent(item.name) +
-            "&parent=" +
-            encodeURIComponent(folderPath) +
-            "&parentName=" +
-            encodeURIComponent(folderName);
-          card.appendChild(makeThumbFolder(findFirstImage(item)));
-          card.appendChild(makeFileInfo(item.name, "Open", ICON_ARROW));
-          grid.appendChild(card);
-        });
-
-        files.forEach(function (item) {
-          var ext = (item.ext || "").toLowerCase();
-          var fileUrl = FILE_BASE + item.path;
-          var card = document.createElement("a");
-          card.className = "file-card";
-
-          if (isImage(ext)) {
-            card.href = "#";
-            card.addEventListener(
-              "click",
-              (function (url, name) {
-                return function (e) {
-                  e.preventDefault();
-                  openLightbox(url, name);
-                };
-              })(fileUrl, item.name),
-            );
-            card.appendChild(makeThumbImage(fileUrl, item.name));
-            card.appendChild(makeFileInfo(item.name, "View", ""));
-          } else {
-            card.href =
-              "../file/?path=" +
-              encodeURIComponent(item.path) +
-              "&name=" +
-              encodeURIComponent(item.name) +
-              "&parent=" +
-              encodeURIComponent(folderPath) +
-              "&parentName=" +
-              encodeURIComponent(folderName);
-            card.appendChild(makeThumbIcon(ext || "file"));
-            card.appendChild(makeFileInfo(item.name, "Open", ICON_ARROW));
-          }
-          grid.appendChild(card);
-        });
-
-        container.textContent = "";
-        container.appendChild(grid);
-      }
-
-      // ── Load manifest ─────────────────────────────────────────────────────────────
-      function showFolder(tree) {
-        var node = getNodeAtPath(tree, folderPath);
-        var container = document.getElementById("content");
-        container.textContent = "";
-        if (!node) {
-          var msg = el("div", "status-msg");
-          msg.textContent = "Folder not found: " + folderPath;
-          container.appendChild(msg);
-          return;
-        }
-        document.getElementById("folder-title").textContent = folderName;
-        renderFiles(node);
-      }
-
-      function loadFolder() {
-        var container = document.getElementById("content");
-        var spinner = el("div", "status-msg");
-        spinner.innerHTML = '<div class="spinner"></div>Loading files&hellip;'; // static HTML
-        container.appendChild(spinner);
-
-        if (window._manifest) {
-          showFolder(window._manifest);
-          return;
-        }
-
-        fetch("../files/manifest.json")
-          .then(function (r) {
-            if (!r.ok) throw new Error("HTTP " + r.status);
-            return r.json();
-          })
-          .then(function (data) {
-            window._manifest = data;
-            showFolder(data);
-          })
-          .catch(function (err) {
-            container.textContent = "";
-            var msg = el("div", "status-msg");
-            var line1 = document.createElement("div");
-            line1.textContent = "Could not load file index.";
-            var line2 = document.createElement("div");
-            line2.textContent = err.message;
-            line2.style.cssText = "font-size:12px;opacity:0.5;margin-top:8px";
-            msg.appendChild(line1);
-            msg.appendChild(line2);
+          if (!items.length) {
+            var msg = el('div', 'status-msg');
+            msg.textContent = 'This folder is empty.';
             container.appendChild(msg);
-          });
-      }
+            return;
+          }
 
-      loadFolder();
+          var folders = items.filter(function (i) { return i.mimeType === FOLDER_MIME; });
+          var files   = items.filter(function (i) { return i.mimeType !== FOLDER_MIME; });
+          var grid    = el('div', 'file-grid');
+
+          // ── Folders ────────────────────────────────────────────────────────────────
+          folders.forEach(function (item) {
+            var card = document.createElement('a');
+            card.className = 'file-card';
+            card.href = '?folderId=' + encodeURIComponent(item.id)
+              + '&name=' + encodeURIComponent(item.name)
+              + '&parentId=' + encodeURIComponent(folderId)
+              + '&parentName=' + encodeURIComponent(folderName);
+
+            // Thumb area
+            var thumb = el('div', 'file-thumb');
+            var img = document.createElement('img');
+            img.alt = '';
+            img.loading = 'lazy';
+            img.style.display = 'none'; // hidden until loaded
+            img.addEventListener('error', function () { this.style.display = 'none'; });
+            thumb.appendChild(img);
+            // Folder icon shown until image loads
+            var iconBg = el('div', 'folder-icon-bg');
+            iconBg.innerHTML = ICON_FOLDER;
+            thumb.appendChild(iconBg);
+            // Arrow badge
+            var badge = el('div', 'folder-arrow-badge');
+            badge.innerHTML = ICON_ARROW;
+            thumb.appendChild(badge);
+            card.appendChild(thumb);
+
+            // Info row
+            var info = el('div', 'file-info');
+            var nameEl = el('div', 'file-name');
+            nameEl.textContent = item.name;
+            var action = el('span', 'file-action');
+            action.innerHTML = ICON_ARROW;
+            action.appendChild(document.createTextNode(' Open'));
+            info.appendChild(nameEl);
+            info.appendChild(action);
+            card.appendChild(info);
+            grid.appendChild(card);
+
+            // Lazy-load thumbnail
+            loadFolderThumb(item.id, img);
+          });
+
+          // ── Files ──────────────────────────────────────────────────────────────────
+          files.forEach(function (item) {
+            var mime = item.mimeType || '';
+            var isImg = IMAGE_MIME.test(mime);
+            var isVid = VIDEO_MIME.test(mime);
+            var isPdf = mime === PDF_MIME;
+            var ext = extOf(item.name);
+
+            var card = document.createElement('a');
+            card.className = 'file-card';
+
+            if (isImg) {
+              // Open in lightbox
+              card.href = '#';
+              (function (fileId, fileName) {
+                card.addEventListener('click', function (e) {
+                  e.preventDefault();
+                  openLightbox(
+                    thumbUrl(fileId),        // display (scaled)
+                    dlUrl(fileId),           // download
+                    fileName
+                  );
+                });
+              })(item.id, item.name);
+
+              var thumb = el('div', 'file-thumb');
+              var img = document.createElement('img');
+              img.src = thumbUrl(item.id);
+              img.alt = item.name;
+              img.loading = 'lazy';
+              img.addEventListener('error', function () { this.style.display = 'none'; });
+              thumb.appendChild(img);
+              card.appendChild(thumb);
+
+              var info = el('div', 'file-info');
+              var nameEl = el('div', 'file-name');
+              nameEl.textContent = item.name;
+              var action = el('span', 'file-action');
+              action.textContent = 'View';
+              info.appendChild(nameEl);
+              info.appendChild(action);
+              card.appendChild(info);
+
+            } else {
+              // Link to file viewer
+              card.href = '../file/?fileId=' + encodeURIComponent(item.id)
+                + '&name=' + encodeURIComponent(item.name)
+                + '&parentId=' + encodeURIComponent(folderId)
+                + '&parentName=' + encodeURIComponent(folderName);
+
+              var thumb = el('div', 'file-thumb');
+              if (isPdf || isVid) {
+                // Use Drive thumbnail for PDFs and videos
+                var img = document.createElement('img');
+                img.src = thumbUrl(item.id);
+                img.alt = item.name;
+                img.loading = 'lazy';
+                img.addEventListener('error', function () { this.style.display = 'none'; });
+                thumb.appendChild(img);
+              }
+              // Extension badge
+              var extBadge = el('div', 'ext-badge');
+              extBadge.textContent = ext || 'file';
+              thumb.appendChild(extBadge);
+              card.appendChild(thumb);
+
+              var info = el('div', 'file-info');
+              var nameEl = el('div', 'file-name');
+              nameEl.textContent = item.name;
+              var action = el('span', 'file-action');
+              action.innerHTML = ICON_ARROW;
+              action.appendChild(document.createTextNode(' Open'));
+              info.appendChild(nameEl);
+              info.appendChild(action);
+              card.appendChild(info);
+            }
+
+            grid.appendChild(card);
+          });
+
+          container.appendChild(grid);
+        }
+
+        // ── Load folder from Drive ────────────────────────────────────────────────────
+        function loadFolder() {
+          var container = document.getElementById('content');
+          var spinner = el('div', 'status-msg');
+          spinner.innerHTML = '<div class="spinner"></div>Loading files&hellip;';
+          container.appendChild(spinner);
+
+          if (!hasKey()) {
+            container.textContent = '';
+            var msg = el('div', 'status-msg');
+            msg.textContent = 'Google API key not configured. Add config.js to brand-kit/.';
+            container.appendChild(msg);
+            return;
+          }
+
+          if (!folderId) {
+            container.textContent = '';
+            var msg = el('div', 'status-msg');
+            msg.textContent = 'No folder specified.';
+            container.appendChild(msg);
+            return;
+          }
+
+          driveList(
+            "'" + folderId + "' in parents and trashed = false",
+            'files(id,name,mimeType)',
+            200
+          )
+            .then(function (data) {
+              if (data.error) throw new Error(data.error.message || 'Drive API error');
+              renderFiles(data.files || []);
+            })
+            .catch(function (err) {
+              container.textContent = '';
+              var msg = el('div', 'status-msg');
+              var line1 = document.createElement('div');
+              line1.textContent = 'Could not load folder.';
+              var line2 = document.createElement('div');
+              line2.textContent = err.message || String(err);
+              line2.style.cssText = 'font-size:12px;opacity:0.5;margin-top:8px';
+              msg.appendChild(line1);
+              msg.appendChild(line2);
+              container.appendChild(msg);
+            });
+        }
+
+        loadFolder();
+      })();
     </script>
   </body>
 </html>
