@@ -367,13 +367,16 @@
         }
 
         function driveList(q, fields, pageSize) {
+          var ctrl = new AbortController();
+          setTimeout(function () { ctrl.abort(); }, 10000);
           return fetch(
             'https://www.googleapis.com/drive/v3/files'
             + '?q=' + encodeURIComponent(q)
             + '&fields=' + encodeURIComponent(fields || 'files(id,name,mimeType)')
             + '&orderBy=' + encodeURIComponent('folder,name')
             + '&pageSize=' + (pageSize || 100)
-            + '&key=' + GOOGLE_API_KEY
+            + '&key=' + GOOGLE_API_KEY,
+            { signal: ctrl.signal }
           ).then(function (r) { return r.json(); });
         }
 

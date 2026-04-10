@@ -486,7 +486,9 @@
             + '&fields=' + encodeURIComponent('files(id,name)')
             + '&pageSize=' + (pageSize || 50)
             + '&key=' + GOOGLE_API_KEY;
-          return fetch(url).then(function (r) { return r.json(); });
+          var ctrl = new AbortController();
+          setTimeout(function () { ctrl.abort(); }, 10000);
+          return fetch(url, { signal: ctrl.signal }).then(function (r) { return r.json(); });
         }
 
         function thumbUrl(id) {

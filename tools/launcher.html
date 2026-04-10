@@ -213,22 +213,11 @@ button {
   <div class="cmd-row">
     <div class="cmd-info">
       <div class="cmd-desc">Pull latest changes from GitHub</div>
-      <div class="cmd-text">git pull origin claude/remove-exposed-api-key-ThrUa</div>
-    </div>
-    <div class="cmd-actions">
-      <button class="btn-copy" onclick="copyCmd(this, 'git pull origin claude/remove-exposed-api-key-ThrUa')">Copy</button>
-      <button class="btn-run" onclick="runCmd('git pull origin claude/remove-exposed-api-key-ThrUa', 'git-pull')">Run</button>
-    </div>
-  </div>
-
-  <div class="cmd-row">
-    <div class="cmd-info">
-      <div class="cmd-desc">Pull from main branch</div>
       <div class="cmd-text">git pull origin main</div>
     </div>
     <div class="cmd-actions">
       <button class="btn-copy" onclick="copyCmd(this, 'git pull origin main')">Copy</button>
-      <button class="btn-run" onclick="runCmd('git pull origin main', 'git-pull-main')">Run</button>
+      <button class="btn-run" onclick="runCmd('git pull origin main', 'git-pull')">Run</button>
     </div>
   </div>
 
@@ -271,12 +260,12 @@ button {
 
   <div class="cmd-row">
     <div class="cmd-info">
-      <div class="cmd-desc">Create brand-kit/config.js with API key</div>
-      <div class="cmd-text">echo "var GOOGLE_API_KEY = '...';" > brand-kit/config.js</div>
+      <div class="cmd-desc">Verify config.js is present (auto-deployed via git)</div>
+      <div class="cmd-text">cat brand-kit/config.js</div>
     </div>
     <div class="cmd-actions">
-      <button class="btn-copy" onclick="copyCmd(this, 'echo \"var GOOGLE_API_KEY = \'REDACTEDE\';\" > brand-kit/config.js')">Copy</button>
-      <button class="btn-run" onclick="runCmd('echo \"var GOOGLE_API_KEY = \'REDACTEDE\';\" > brand-kit/config.js', 'create-config')">Run</button>
+      <button class="btn-copy" onclick="copyCmd(this, 'cat brand-kit/config.js')">Copy</button>
+      <button class="btn-run" onclick="runCmd('cat brand-kit/config.js', 'check-config')">Run</button>
     </div>
   </div>
 

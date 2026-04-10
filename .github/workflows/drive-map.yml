@@ -3,8 +3,6 @@ name: Build Drive Map
 on:
   push:
     branches: [main]
-    paths:
-      - 'brand-kit/config.js'
   schedule:
     # Every Monday at 6 AM UTC
     - cron: '0 6 * * 1'
