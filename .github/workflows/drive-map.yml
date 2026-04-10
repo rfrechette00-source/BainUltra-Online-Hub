@@ -1,0 +1,77 @@
+name: Build Drive Map
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'brand-kit/config.js'
+  schedule:
+    # Every Monday at 6 AM UTC
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate drive-map.json
+        run: |
+          python3 - <<'PYEOF'
+          import json, re, sys, urllib.request, urllib.parse
+          from datetime import datetime, timezone
+
+          ROOT_ID = '1d9qY3wMaK-eUJJFNlnnX84F9StrG0LQS'
+
+          # Read API key from committed config.js
+          with open('brand-kit/config.js') as f:
+              m = re.search(r"GOOGLE_API_KEY\s*=\s*'([^']+)'", f.read())
+          if not m or m.group(1) in ('YOUR_GOOGLE_API_KEY_HERE', 'REDACTED'):
+              print('ERROR: valid API key not found in config.js', file=sys.stderr)
+              sys.exit(1)
+          api_key = m.group(1)
+
+          # Fetch top-level folders from the root Brand Kit folder
+          q = f"'{ROOT_ID}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false"
+          url = 'https://www.googleapis.com/drive/v3/files?' + urllib.parse.urlencode({
+              'q': q,
+              'fields': 'files(id,name)',
+              'pageSize': '50',
+              'key': api_key,
+          })
+          req = urllib.request.Request(url, headers={'User-Agent': 'BainUltra-Hub/1.0'})
+          with urllib.request.urlopen(req, timeout=30) as r:
+              data = json.load(r)
+
+          if 'error' in data:
+              print(f"Drive API error: {data['error']}", file=sys.stderr)
+              sys.exit(1)
+
+          folders = {f['name']: f['id'] for f in data.get('files', [])}
+          print(f"Mapped {len(folders)} folders: {list(folders.keys())}")
+
+          result = {
+              'generated': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+              'rootId': ROOT_ID,
+              'folders': folders,
+          }
+          with open('brand-kit/files/drive-map.json', 'w') as f:
+              json.dump(result, f, indent=2)
+          print('drive-map.json written successfully.')
+          PYEOF
+
+      - name: Commit updated drive map
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add brand-kit/files/drive-map.json
+          if git diff --cached --quiet; then
+            echo "drive-map.json is up to date — nothing to commit."
+          else
+            git commit -m "chore: update Drive folder map [skip ci]"
+            git push
+          fi

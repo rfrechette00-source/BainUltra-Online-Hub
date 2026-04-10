@@ -4,6 +4,7 @@
 # Large generated assets
 brand-kit/files/**
 !brand-kit/files/manifest.json
+!brand-kit/files/drive-map.json
 
 # Claude local session files
 .claude/
