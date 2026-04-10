@@ -16,14 +16,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate drive-map.json
         run: |
           python3 - <<'PYEOF'
           import json, re, sys, urllib.request, urllib.parse
           from datetime import datetime, timezone
+          from collections import deque
 
-          ROOT_ID = '1d9qY3wMaK-eUJJFNlnnX84F9StrG0LQS'
+          ROOT_ID        = '1d9qY3wMaK-eUJJFNlnnX84F9StrG0LQS'
+          CONTENT_ID     = '1-CZ3ouYd990vVYt9wzhR7Y1gsiS1IEQx'
+          FOLDER_MIME    = 'application/vnd.google-apps.folder'
 
           # Read API key from committed config.js
           with open('brand-kit/config.js') as f:
@@ -33,43 +38,99 @@ jobs:
               sys.exit(1)
           api_key = m.group(1)
 
-          # Fetch top-level folders from the root Brand Kit folder
-          q = f"'{ROOT_ID}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false"
-          url = 'https://www.googleapis.com/drive/v3/files?' + urllib.parse.urlencode({
-              'q': q,
-              'fields': 'files(id,name)',
-              'pageSize': '50',
-              'key': api_key,
-          })
-          req = urllib.request.Request(url, headers={'User-Agent': 'BainUltra-Hub/1.0'})
-          with urllib.request.urlopen(req, timeout=30) as r:
-              data = json.load(r)
+          def drive_list(parent_id, page_size=200):
+              q = f"'{parent_id}' in parents and trashed=false"
+              url = 'https://www.googleapis.com/drive/v3/files?' + urllib.parse.urlencode({
+                  'q': q,
+                  'fields': 'files(id,name,mimeType)',
+                  'pageSize': str(page_size),
+                  'orderBy': 'folder,name',
+                  'key': api_key,
+              })
+              req = urllib.request.Request(url, headers={'User-Agent': 'BainUltra-Hub/1.0'})
+              with urllib.request.urlopen(req, timeout=30) as r:
+                  data = json.load(r)
+              if 'error' in data:
+                  raise RuntimeError(f"Drive API error for {parent_id}: {data['error']}")
+              return data.get('files', [])
 
-          if 'error' in data:
-              print(f"Drive API error: {data['error']}", file=sys.stderr)
-              sys.exit(1)
+          # ── BFS over both the root folder and the content folder ─────────────
+          tree   = {}   # id → {name, parentId, children:[{id,name,mimeType}]}
+          roots  = []   # top-level folder IDs under ROOT_ID
+          queue  = deque()
+          visited = set()
 
-          folders = {f['name']: f['id'] for f in data.get('files', [])}
-          print(f"Mapped {len(folders)} folders: {list(folders.keys())}")
+          def enqueue(folder_id, name, parent_id):
+              tree[folder_id] = {'name': name, 'parentId': parent_id, 'children': []}
+              queue.append(folder_id)
+
+          # Seed: list ROOT_ID children (the 8 Brand Kit categories)
+          print(f'Fetching root folder {ROOT_ID}...')
+          for item in drive_list(ROOT_ID):
+              if item['mimeType'] == FOLDER_MIME:
+                  roots.append(item['id'])
+                  enqueue(item['id'], item['name'], ROOT_ID)
+              # (files directly in root are ignored for tile mapping)
+
+          # Also seed from the content/media folder if different from root children
+          print(f'Fetching content folder {CONTENT_ID}...')
+          content_children = []
+          for item in drive_list(CONTENT_ID):
+              content_children.append(item)
+              if item['mimeType'] == FOLDER_MIME and item['id'] not in tree:
+                  enqueue(item['id'], item['name'], CONTENT_ID)
+
+          # BFS: walk every queued folder
+          while queue:
+              fid = queue.popleft()
+              if fid in visited:
+                  continue
+              visited.add(fid)
+              print(f'  → {tree[fid]["name"]} ({fid})')
+              try:
+                  items = drive_list(fid)
+              except Exception as e:
+                  print(f'    WARNING: {e}')
+                  continue
+              for item in items:
+                  child = {'id': item['id'], 'name': item['name'], 'mimeType': item['mimeType']}
+                  tree[fid]['children'].append(child)
+                  if item['mimeType'] == FOLDER_MIME and item['id'] not in tree:
+                      enqueue(item['id'], item['name'], fid)
+
+          # ── Build the flat name→id map for top-level tiles ───────────────────
+          folders = {tree[fid]['name']: fid for fid in roots}
 
           result = {
-              'generated': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
-              'rootId': ROOT_ID,
-              'folders': folders,
+              'generated':     datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+              'rootId':        ROOT_ID,
+              'contentId':     CONTENT_ID,
+              'folders':       folders,   # name→id for Brand Kit tiles
+              'tree':          tree,      # full folder tree for viewer
           }
           with open('brand-kit/files/drive-map.json', 'w') as f:
               json.dump(result, f, indent=2)
-          print('drive-map.json written successfully.')
+
+          total_folders = len(tree)
+          total_files   = sum(
+              len([c for c in node['children'] if c['mimeType'] != FOLDER_MIME])
+              for node in tree.values()
+          )
+          print(f'\ndrive-map.json written: {total_folders} folders, {total_files} files indexed.')
+          print(f'Top-level Brand Kit folders: {list(folders.keys())}')
           PYEOF
 
       - name: Commit updated drive map
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
           git add brand-kit/files/drive-map.json
           if git diff --cached --quiet; then
             echo "drive-map.json is up to date — nothing to commit."
           else
             git commit -m "chore: update Drive folder map [skip ci]"
-            git push
+            git push origin main
           fi

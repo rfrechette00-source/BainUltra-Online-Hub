@@ -410,7 +410,18 @@
           return e;
         }
 
-        // ── Thumbnail concurrency queue (max 4 simultaneous API requests) ─────────────
+        // ── Cached drive-map (shared across thumbnail and folder loads) ─────────────
+        var driveMap = null;
+
+        function getDriveMap() {
+          if (driveMap !== null) return Promise.resolve(driveMap);
+          return fetch('../files/drive-map.json?v=20260410')
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .catch(function () { return null; })
+            .then(function (m) { driveMap = m || {}; return driveMap; });
+        }
+
+        // ── Thumbnail concurrency queue (max 4 simultaneous requests) ─────────────
         var thumbQueue = [], thumbActive = 0;
         function queueThumb(folId, imgEl) {
           thumbQueue.push([folId, imgEl]);
@@ -429,8 +440,35 @@
 
         // ── Load thumbnail for a folder ───────────────────────────────────────────────
         function loadFolderThumb(folId, imgEl) {
-          // Returns a Promise so the concurrency queue can track completion.
-          // 1. direct images
+          // First: try to find an image from the cached drive-map tree (no API call)
+          var map = driveMap;
+          if (map && map.tree) {
+            var node = map.tree[folId];
+            if (node && node.children) {
+              var direct = node.children.filter(function (c) { return IMAGE_MIME.test(c.mimeType || ''); });
+              if (direct.length) {
+                imgEl.src = thumbUrl(direct[0].id);
+                imgEl.style.display = '';
+                return Promise.resolve();
+              }
+              // Try first subfolder's children
+              var subFolders = node.children.filter(function (c) { return c.mimeType === FOLDER_MIME; });
+              for (var si = 0; si < subFolders.length; si++) {
+                var subNode = map.tree[subFolders[si].id];
+                if (subNode && subNode.children) {
+                  var subImg = subNode.children.filter(function (c) { return IMAGE_MIME.test(c.mimeType || ''); });
+                  if (subImg.length) {
+                    imgEl.src = thumbUrl(subImg[0].id);
+                    imgEl.style.display = '';
+                    return Promise.resolve();
+                  }
+                }
+              }
+            }
+          }
+
+          // Fallback: live Drive API thumbnail lookup
+          if (!hasKey()) return Promise.resolve();
           return driveList("'" + folId + "' in parents and mimeType contains 'image/' and trashed = false", 'files(id)', 5)
             .then(function (d) {
               if (d.files && d.files.length) {
@@ -438,7 +476,6 @@
                 imgEl.style.display = '';
                 return;
               }
-              // 2. first subfolder's images
               return driveList("'" + folId + "' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false", 'files(id)', 3)
                 .then(function (sub) {
                   if (!sub.files || !sub.files.length) return;
@@ -451,9 +488,7 @@
                         if (d2.files && d2.files.length) {
                           imgEl.src = thumbUrl(d2.files[0].id);
                           imgEl.style.display = '';
-                        } else {
-                          tryNext();
-                        }
+                        } else { tryNext(); }
                       });
                   }
                   tryNext();
@@ -626,31 +661,35 @@
           container.appendChild(wrap);
         }
 
-        // ── Load folder from Drive ────────────────────────────────────────────────────
+        // ── Load folder — drive-map tree first, live API fallback ───────────────────
         function loadFolder() {
           var container = document.getElementById('content');
 
-          if (!hasKey() || !folderId) {
-            showUnavailable();
-            return;
-          }
+          if (!folderId) { showUnavailable(); return; }
 
           var spinner = el('div', 'status-msg');
           spinner.innerHTML = '<div class="spinner"></div>Loading files&hellip;';
           container.appendChild(spinner);
 
-          driveList(
-            "'" + folderId + "' in parents and trashed = false",
-            'files(id,name,mimeType)',
-            100
-          )
-            .then(function (data) {
-              if (data.error) throw new Error(data.error.message || 'Drive API error');
-              renderFiles(data.files || []);
-            })
-            .catch(function () {
-              showUnavailable();
-            });
+          getDriveMap().then(function (map) {
+            // Serve from pre-built tree if this folder is indexed
+            if (map && map.tree && map.tree[folderId]) {
+              renderFiles(map.tree[folderId].children || []);
+              return;
+            }
+            // Fall back to live Drive API
+            if (!hasKey()) { showUnavailable(); return; }
+            driveList(
+              "'" + folderId + "' in parents and trashed = false",
+              'files(id,name,mimeType)',
+              100
+            )
+              .then(function (data) {
+                if (data.error) throw new Error(data.error.message || 'Drive API error');
+                renderFiles(data.files || []);
+              })
+              .catch(function () { showUnavailable(); });
+          });
         }
 
         loadFolder();
