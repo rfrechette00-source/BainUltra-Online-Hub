@@ -16,17 +16,10 @@
         --bu-accent: #c8a87c;
         --bu-accent-light: #d4bc98;
       }
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
       html {
         height: 100%;
-        font-family:
-          "Inter",
-          -apple-system,
-          sans-serif;
+        font-family: "Inter", -apple-system, sans-serif;
         background: #000;
       }
       body {
@@ -51,19 +44,13 @@
         gap: 6px;
         font-size: 12px;
         font-weight: 500;
-        color: rgba(255, 255, 255, 0.35);
+        color: rgba(255,255,255,0.35);
         text-decoration: none;
         letter-spacing: 0.05em;
         transition: color 0.2s;
       }
-      .back-link:hover {
-        color: rgba(255, 255, 255, 0.65);
-      }
-      .back-link svg {
-        width: 14px;
-        height: 14px;
-        fill: currentColor;
-      }
+      .back-link:hover { color: rgba(255,255,255,0.65); }
+      .back-link svg { width: 14px; height: 14px; fill: currentColor; }
       .video-title {
         font-size: 18px;
         font-weight: 600;
@@ -86,11 +73,38 @@
         background: #111;
         border-radius: 12px;
         overflow: hidden;
+        position: relative;
       }
-      .video-container video {
+      .video-container video,
+      .video-container iframe {
         width: 100%;
         height: 100%;
         display: block;
+        border: none;
+      }
+      /* Loading state */
+      .video-loading {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #111;
+      }
+      .spinner {
+        width: 36px;
+        height: 36px;
+        border: 3px solid rgba(200,168,124,0.2);
+        border-top-color: var(--bu-accent);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .error-msg {
+        text-align: center;
+        font-size: 14px;
+        color: rgba(255,255,255,0.4);
+        padding: 20px;
       }
       .video-controls {
         display: flex;
@@ -109,39 +123,20 @@
         color: #fff;
         padding: 11px 28px;
         border-radius: 8px;
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
         text-decoration: none;
         transition: all 0.2s;
       }
-      .dl-btn:hover {
-        background: rgba(255, 255, 255, 0.15);
-      }
-      .dl-btn svg {
-        width: 15px;
-        height: 15px;
-        fill: currentColor;
-      }
-
+      .dl-btn:hover { background: rgba(255,255,255,0.15); }
+      .dl-btn svg { width: 15px; height: 15px; fill: currentColor; }
+      .dl-btn.hidden { display: none; }
       @media (max-width: 600px) {
-        .header {
-          padding: 16px 16px 8px;
-        }
-        .video-title {
-          font-size: 16px;
-          margin: 8px 0 12px;
-        }
-        .video-wrapper {
-          padding: 0 10px;
-        }
-        .video-controls {
-          padding: 16px 0 32px;
-          gap: 8px;
-        }
-        .dl-btn {
-          padding: 10px 22px;
-          font-size: 12px;
-        }
+        .header { padding: 16px 16px 8px; }
+        .video-title { font-size: 16px; margin: 8px 0 12px; }
+        .video-wrapper { padding: 0 10px; }
+        .video-controls { padding: 16px 0 32px; gap: 8px; }
+        .dl-btn { padding: 10px 22px; font-size: 12px; }
       }
     </style>
   </head>
@@ -149,9 +144,7 @@
     <div class="header">
       <a class="back-link" href="../">
         <svg viewBox="0 0 24 24">
-          <path
-            d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
-          />
+          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
         </svg>
         Back to Brand Kit
       </a>
@@ -159,28 +152,125 @@
     </div>
 
     <div class="video-wrapper">
-      <div class="video-container">
-        <video
-          src="../files/BAINULTRA-ONLINE-HUB/Brand Kit/Showroom Video Loop/Showroom Video Loop.mp4"
-          autoplay
-          loop
-          muted
-          playsinline
-          controls
-        ></video>
+      <div class="video-container" id="video-container">
+        <div class="video-loading" id="loading">
+          <div class="spinner"></div>
+        </div>
       </div>
       <div class="video-controls">
-        <a
-          class="dl-btn"
-          href="../files/BAINULTRA-ONLINE-HUB/Brand Kit/Showroom Video Loop/Showroom Video Loop.mp4"
-          download="Showroom Video Loop.mp4"
-        >
+        <a class="dl-btn hidden" id="dl-btn" href="#" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24">
-            <path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z" />
+            <path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/>
           </svg>
           Download Video
         </a>
       </div>
     </div>
+
+    <script src="../config.js"></script>
+    <script>
+      (function () {
+        var ROOT_ID = '1d9qY3wMaK-eUJJFNlnnX84F9StrG0LQS';
+        var FOLDER_NAME = 'Showroom Video Loop';
+        var VIDEO_MIME = /^video\//;
+        var FOLDER_MIME = 'application/vnd.google-apps.folder';
+
+        var container = document.getElementById('video-container');
+        var loading   = document.getElementById('loading');
+        var dlBtn     = document.getElementById('dl-btn');
+
+        function showError(msg) {
+          loading.textContent = '';
+          var e = document.createElement('div');
+          e.className = 'error-msg';
+          e.textContent = msg || 'Could not load video.';
+          loading.appendChild(e);
+        }
+
+        function hasKey() {
+          return typeof GOOGLE_API_KEY === 'string'
+            && GOOGLE_API_KEY.length > 10
+            && GOOGLE_API_KEY !== 'YOUR_GOOGLE_API_KEY_HERE';
+        }
+
+        function driveList(q, fields, pageSize) {
+          return fetch(
+            'https://www.googleapis.com/drive/v3/files'
+            + '?q=' + encodeURIComponent(q)
+            + '&fields=' + encodeURIComponent(fields || 'files(id,name,mimeType)')
+            + '&pageSize=' + (pageSize || 50)
+            + '&key=' + GOOGLE_API_KEY
+          ).then(function (r) { return r.json(); });
+        }
+
+        function embedIframe(fileId) {
+          // Fallback: Drive video player iframe
+          loading.style.display = 'none';
+          var iframe = document.createElement('iframe');
+          iframe.src = 'https://drive.google.com/file/d/' + fileId + '/preview';
+          iframe.allowFullscreen = true;
+          iframe.allow = 'autoplay';
+          container.appendChild(iframe);
+        }
+
+        function embedVideo(fileId, fileName) {
+          loading.style.display = 'none';
+          var video = document.createElement('video');
+          video.src = 'https://drive.google.com/uc?export=view&id=' + fileId;
+          video.autoplay = true;
+          video.loop = true;
+          video.muted = true;
+          video.playsinline = true;
+          video.controls = true;
+          video.style.cssText = 'width:100%;height:100%;';
+          video.addEventListener('error', function () {
+            // Direct src failed — fall back to iframe
+            container.removeChild(video);
+            embedIframe(fileId);
+          });
+          container.appendChild(video);
+
+          // Download button
+          dlBtn.href = 'https://drive.google.com/uc?export=download&id=' + fileId;
+          dlBtn.classList.remove('hidden');
+        }
+
+        function findAndPlay() {
+          if (!hasKey()) {
+            showError('Google API key not configured. Add config.js to brand-kit/.');
+            return;
+          }
+
+          // Step 1: find "Showroom Video Loop" folder inside root
+          driveList(
+            "'" + ROOT_ID + "' in parents and name = '" + FOLDER_NAME + "' and mimeType = '" + FOLDER_MIME + "' and trashed = false",
+            'files(id,name)', 5
+          )
+            .then(function (d) {
+              if (!d.files || !d.files.length) throw new Error('Showroom Video Loop folder not found.');
+              var folderId = d.files[0].id;
+
+              // Step 2: find the video file inside it
+              return driveList(
+                "'" + folderId + "' in parents and trashed = false",
+                'files(id,name,mimeType)', 20
+              );
+            })
+            .then(function (d) {
+              var videoFile = (d.files || []).find(function (f) {
+                return VIDEO_MIME.test(f.mimeType)
+                  || /\.(mp4|mov|webm|m4v|avi|mkv)$/i.test(f.name);
+              });
+              if (!videoFile) throw new Error('No video file found in Showroom Video Loop folder.');
+              embedVideo(videoFile.id, videoFile.name);
+            })
+            .catch(function (err) {
+              showError(err.message || 'Could not load video.');
+            });
+        }
+
+        findAndPlay();
+      })();
+    </script>
   </body>
 </html>
