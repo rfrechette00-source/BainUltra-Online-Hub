@@ -581,6 +581,18 @@
           container.appendChild(grid);
         }
 
+        // ── Embedded Drive fallback (no API key needed) ───────────────────────────────
+        function showDriveEmbed(id) {
+          var container = document.getElementById('content');
+          container.textContent = '';
+          container.style.cssText = 'width:100%;flex:1;display:flex;flex-direction:column;';
+          var iframe = document.createElement('iframe');
+          iframe.src = 'https://drive.google.com/embeddedfolderview?id=' + id + '#grid';
+          iframe.style.cssText = 'width:100%;flex:1;border:none;min-height:70vh;';
+          iframe.allowFullscreen = true;
+          container.appendChild(iframe);
+        }
+
         // ── Load folder from Drive ────────────────────────────────────────────────────
         function loadFolder() {
           var container = document.getElementById('content');
@@ -588,19 +600,8 @@
           spinner.innerHTML = '<div class="spinner"></div>Loading files&hellip;';
           container.appendChild(spinner);
 
-          if (!hasKey()) {
-            container.textContent = '';
-            var msg = el('div', 'status-msg');
-            msg.textContent = 'Google API key not configured. Add config.js to brand-kit/.';
-            container.appendChild(msg);
-            return;
-          }
-
-          if (!folderId) {
-            container.textContent = '';
-            var msg = el('div', 'status-msg');
-            msg.textContent = 'No folder specified.';
-            container.appendChild(msg);
+          if (!hasKey() || !folderId) {
+            showDriveEmbed(folderId || '1d9qY3wMaK-eUJJFNlnnX84F9StrG0LQS');
             return;
           }
 
@@ -613,17 +614,9 @@
               if (data.error) throw new Error(data.error.message || 'Drive API error');
               renderFiles(data.files || []);
             })
-            .catch(function (err) {
-              container.textContent = '';
-              var msg = el('div', 'status-msg');
-              var line1 = document.createElement('div');
-              line1.textContent = 'Could not load folder.';
-              var line2 = document.createElement('div');
-              line2.textContent = err.message || String(err);
-              line2.style.cssText = 'font-size:12px;opacity:0.5;margin-top:8px';
-              msg.appendChild(line1);
-              msg.appendChild(line2);
-              container.appendChild(msg);
+            .catch(function () {
+              // API failed — fall back to embedded Drive folder viewer
+              showDriveEmbed(folderId);
             });
         }
 
