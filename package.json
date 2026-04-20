@@ -1,0 +1,14 @@
+{
+  "name": "bainultra-online-hub",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers npx playwright test",
+    "test:chromium": "PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers npx playwright test --project=chromium",
+    "test:headed": "PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers npx playwright test --headed",
+    "test:report": "npx playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1"
+  }
+}
