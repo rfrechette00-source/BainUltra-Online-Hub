@@ -1,0 +1,54 @@
+name: Playwright Tests
+
+on:
+  # Run after the Pages deploy finishes, so tests hit the freshly deployed site
+  workflow_run:
+    workflows: ["Deploy to GitHub Pages"]
+    types: [completed]
+  # Allow manual runs anytime
+  workflow_dispatch:
+  # Also run on PRs (tests against currently-live main, not the PR changes —
+  # that requires preview deployments, coming in a future change)
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    # Only run after-deploy tests if the deploy actually succeeded
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright tests against live site
+        run: npx playwright test --project=chromium
+        env:
+          BASE_URL: https://rfrechette00-source.github.io/BainUltra-Online-Hub
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
+
+      - name: Upload failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results/
+          retention-days: 7

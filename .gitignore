@@ -1,10 +1,10 @@
 # OS / editor noise
 .DS_Store
 
-# Large generated assets
-brand-kit/files/**
-!brand-kit/files/manifest.json
-!brand-kit/files/drive-map.json
-
 # Claude local session files
 .claude/
+
+# Playwright
+node_modules/
+playwright-report/
+test-results/

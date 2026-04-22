@@ -209,6 +209,7 @@ html, body {
     <button class="tb" onclick="nextSlide()">&#9654;</button>
   </div>
   <div class="topbar-right">
+    <a class="tb" href="https://docs.google.com/presentation/d/1Ct4syjmfjDKC8EYrsBehb5xLdXwn_hQq/export/pptx" title="Download PPTX" style="font-size:11px;font-weight:500;">&#8681; PPTX</a>
     <a class="tb" href="../" title="Back to Hub">&#8962;</a>
     <button class="tb" onclick="toggleFullscreen()" title="Fullscreen">&#x26F6;</button>
   </div>
@@ -328,6 +329,9 @@ function goToSlide(idx) {
   const hasVideo = slideData[idx].videos.length > 0;
   playBtn.classList.toggle('visible', hasVideo);
 
+  // Auto-play video on slides that have one
+  if (hasVideo) setTimeout(showVideos, 200);
+
   // Update thumbnails
   document.querySelectorAll('.thumb').forEach((t, i) => {
     t.classList.toggle('active', i === idx);
@@ -358,6 +362,7 @@ function showVideos() {
 
   overlay.classList.add('active');
   player.src = VIDEO_BASE + videos[0];
+  player.onended = hideVideos;
 
   selector.innerHTML = '';
   if (videos.length > 1) {
