@@ -194,6 +194,23 @@
         border: 1px solid rgba(200,168,124,0.15);
       }
       .file-action svg { width: 11px; height: 11px; fill: currentColor; }
+      .dl-icon-btn {
+        flex-shrink: 0;
+        width: 28px;
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.1);
+        color: rgba(255,255,255,0.55);
+        cursor: pointer;
+        transition: all 0.15s;
+        padding: 0;
+      }
+      .dl-icon-btn:hover { background: rgba(200,168,124,0.2); border-color: rgba(200,168,124,0.35); color: var(--bu-accent); }
+      .dl-icon-btn svg { width: 14px; height: 14px; fill: currentColor; }
       .status-msg {
         text-align: center;
         padding: 80px 20px;
@@ -401,6 +418,26 @@
         var ICON_ARROW  = '<svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>';
         var ICON_DL     = '<svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>';
 
+        function makeDlBtn(fileId, fileName) {
+          var btn = document.createElement('button');
+          btn.className = 'dl-icon-btn';
+          btn.title = 'Download ' + fileName;
+          btn.innerHTML = ICON_DL;
+          btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            var a = document.createElement('a');
+            a.href = dlUrl(fileId);
+            a.download = fileName;
+            a.target = '_blank';
+            a.rel = 'noopener';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          });
+          return btn;
+        }
+
         function el(tag, cls) {
           var e = document.createElement(tag);
           if (cls) e.className = cls;
@@ -558,6 +595,7 @@
               var action = el('span', 'file-action');
               action.textContent = 'View';
               info.appendChild(nameEl);
+              info.appendChild(makeDlBtn(item.id, item.name));
               info.appendChild(action);
               card.appendChild(info);
 
@@ -591,6 +629,7 @@
               action.innerHTML = ICON_ARROW;
               action.appendChild(document.createTextNode(' Open'));
               info.appendChild(nameEl);
+              info.appendChild(makeDlBtn(item.id, item.name));
               info.appendChild(action);
               card.appendChild(info);
             }
