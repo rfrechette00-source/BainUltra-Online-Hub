@@ -328,6 +328,9 @@ function goToSlide(idx) {
   const hasVideo = slideData[idx].videos.length > 0;
   playBtn.classList.toggle('visible', hasVideo);
 
+  // Auto-play video on slides that have one
+  if (hasVideo) setTimeout(showVideos, 200);
+
   // Update thumbnails
   document.querySelectorAll('.thumb').forEach((t, i) => {
     t.classList.toggle('active', i === idx);
@@ -358,6 +361,7 @@ function showVideos() {
 
   overlay.classList.add('active');
   player.src = VIDEO_BASE + videos[0];
+  player.onended = hideVideos;
 
   selector.innerHTML = '';
   if (videos.length > 1) {
