@@ -103,12 +103,16 @@
       .section-heading {
         text-align: center;
         padding: 0 20px 32px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
       }
       .section-heading h1 {
         font-size: 22px;
         font-weight: 600;
         letter-spacing: -0.02em;
-        margin-bottom: 6px;
+        margin-bottom: 0;
       }
       .section-heading p {
         font-size: 13px;
@@ -116,6 +120,52 @@
         color: rgba(255, 255, 255, 0.45);
         line-height: 1.5;
       }
+      .dl-all-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(200, 168, 124, 0.1);
+        border: 1px solid rgba(200, 168, 124, 0.25);
+        border-radius: 8px;
+        color: var(--bu-accent);
+        font-size: 12px;
+        font-weight: 500;
+        padding: 7px 14px;
+        text-decoration: none;
+        letter-spacing: 0.02em;
+        transition: all 0.2s;
+      }
+      .dl-all-btn:hover {
+        background: rgba(200, 168, 124, 0.18);
+        border-color: rgba(200, 168, 124, 0.45);
+      }
+      .dl-all-btn svg {
+        width: 14px; height: 14px; fill: currentColor;
+      }
+
+      /* Per-tile download button */
+      .dl-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 2;
+        width: 30px;
+        height: 30px;
+        border-radius: 7px;
+        background: rgba(0,0,0,0.45);
+        border: 1px solid rgba(255,255,255,0.15);
+        color: rgba(255,255,255,0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.2s, background 0.15s;
+        padding: 0;
+      }
+      .dl-btn svg { width: 15px; height: 15px; fill: currentColor; }
+      .folder-card:hover .dl-btn { opacity: 1; }
+      .dl-btn:hover { background: rgba(200,168,124,0.3); color: #fff; }
 
       /* Folder grid */
       .folders {
@@ -340,6 +390,10 @@
 
     <div class="section-heading">
       <h1>Brand Kit</h1>
+      <a class="dl-all-btn" id="dlAllBtn" href="https://drive.google.com/drive/folders/1d9qY3wMaK-eUJJFNlnnX84F9StrG0LQS" target="_blank" rel="noopener" title="Open full Brand Kit in Google Drive to download">
+        <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>
+        Download All
+      </a>
     </div>
 
     <div class="folders">
@@ -356,6 +410,9 @@
           Open folder
           <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </div>
+        <button class="dl-btn" title="Download this folder" onclick="event.preventDefault();event.stopPropagation();window.open(this.dataset.url,'_blank')" data-url="https://drive.google.com/drive/folders/1d9qY3wMaK-eUJJFNlnnX84F9StrG0LQS">
+          <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>
+        </button>
       </a>
 
       <a class="folder-card" href="view/?name=Product+Images" data-folder-name="Product Images">
@@ -370,6 +427,9 @@
           Open folder
           <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </div>
+        <button class="dl-btn" title="Download this folder" onclick="event.preventDefault();event.stopPropagation();window.open(this.dataset.url,'_blank')" data-url="https://drive.google.com/drive/folders/1d9qY3wMaK-eUJJFNlnnX84F9StrG0LQS">
+          <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>
+        </button>
       </a>
 
       <a class="folder-card" href="view/?name=Mini+Brochure+Online" data-folder-name="Mini Brochure Online">
@@ -384,6 +444,9 @@
           Open folder
           <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </div>
+        <button class="dl-btn" title="Download this folder" onclick="event.preventDefault();event.stopPropagation();window.open(this.dataset.url,'_blank')" data-url="https://drive.google.com/drive/folders/1d9qY3wMaK-eUJJFNlnnX84F9StrG0LQS">
+          <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>
+        </button>
       </a>
 
       <!-- Special: always links to order-forms-product-sheets/ sub-page -->
@@ -399,6 +462,9 @@
           Open folder
           <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </div>
+        <button class="dl-btn" title="Download this folder" onclick="event.preventDefault();event.stopPropagation();window.open(this.dataset.url,'_blank')" data-url="https://drive.google.com/drive/folders/1d9qY3wMaK-eUJJFNlnnX84F9StrG0LQS">
+          <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>
+        </button>
       </a>
 
       <a class="folder-card" href="view/?name=Collections+by+Model" data-folder-name="Collections by Model">
@@ -413,6 +479,9 @@
           Open folder
           <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </div>
+        <button class="dl-btn" title="Download this folder" onclick="event.preventDefault();event.stopPropagation();window.open(this.dataset.url,'_blank')" data-url="https://drive.google.com/drive/folders/1d9qY3wMaK-eUJJFNlnnX84F9StrG0LQS">
+          <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>
+        </button>
       </a>
 
       <a class="folder-card" href="view/?name=Installation+Guides+%26+Manuals" data-folder-name="Installation Guides &amp; Manuals">
@@ -427,6 +496,9 @@
           Open folder
           <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </div>
+        <button class="dl-btn" title="Download this folder" onclick="event.preventDefault();event.stopPropagation();window.open(this.dataset.url,'_blank')" data-url="https://drive.google.com/drive/folders/1d9qY3wMaK-eUJJFNlnnX84F9StrG0LQS">
+          <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>
+        </button>
       </a>
 
       <a class="folder-card" href="view/?name=Brand+Guidelines" data-folder-name="Brand Guidelines">
@@ -441,6 +513,9 @@
           Open folder
           <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </div>
+        <button class="dl-btn" title="Download this folder" onclick="event.preventDefault();event.stopPropagation();window.open(this.dataset.url,'_blank')" data-url="https://drive.google.com/drive/folders/1d9qY3wMaK-eUJJFNlnnX84F9StrG0LQS">
+          <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"/></svg>
+        </button>
       </a>
 
       <!-- Special: always links to video/ sub-page -->
@@ -536,6 +611,9 @@
             if (!LINK_OVERRIDES[displayName]) {
               tile.href = 'view/?folderId=' + folderId + '&name=' + encodeURIComponent(displayName);
             }
+            // Update per-tile download button to point to the specific subfolder
+            var dlBtn = tile.querySelector('.dl-btn');
+            if (dlBtn) dlBtn.dataset.url = 'https://drive.google.com/drive/folders/' + folderId;
             if (hasKey()) {
               var thumb = tile.querySelector('.thumb-bg');
               if (thumb) loadThumb(folderId, thumb);
